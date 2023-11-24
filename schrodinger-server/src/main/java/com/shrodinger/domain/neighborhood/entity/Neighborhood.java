@@ -1,15 +1,15 @@
 package com.shrodinger.domain.neighborhood.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
+import com.shrodinger.domain.user.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -35,4 +35,11 @@ public class Neighborhood extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String dong; // 동
+
+    /*
+    @OneToMany(mappedBy = "neighborhood", cascade = CascadeType.ALL)
+    private List<Member> members = new ArrayList<>();
+
+     */
+
 }

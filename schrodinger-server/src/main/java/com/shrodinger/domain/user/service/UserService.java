@@ -1,16 +1,22 @@
 package com.shrodinger.domain.user.service;
 
+import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.JwtTokenProvider;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.jwt.TokenInfo;
-import com.shrodinger.domain.user.dto.Response;
+import com.shrodinger.common.response.ApiResponse;
+import com.shrodinger.common.response.BaseCode;
+import com.shrodinger.common.response.status.ErrorStatus;
+import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
 import com.shrodinger.domain.user.dto.UserResponseDTO;
 import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
 import com.shrodinger.domain.user.entity.Authority;
 import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
+
 import java.util.Collections;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,14 +35,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final MemberRepository memberRepository;
-    private final Response response;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public ResponseEntity<?> signUp(UserSignUpRequestDto signUp) {
+    public ApiResponse signUp(UserSignUpRequestDto signUp) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
-            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
+            throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXIST);
         }
 
         Member user = Member.builder()
@@ -47,13 +52,12 @@ public class UserService {
                 .build();
         memberRepository.save(user);
 
-        return response.success("회원가입에 성공했습니다.");
+        return ApiResponse.of(SuccessStatus._SIGNUP_SUCCESS, "회원가입 성공!");
     }
 
-    public ResponseEntity<?> login(UserLoginRequestDTO userLoginRequestDTO) {
+    public ApiResponse login(UserLoginRequestDTO userLoginRequestDTO) {
         if (memberRepository.findByEmail(userLoginRequestDTO.getEmail()).orElse(null) == null) {
-            return response.fail("아이디(이메일) 또는 비밀번호를 잘못 입력했습니다."
-                    + "입력하신 내용을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
+            throw new UserHandler(ErrorStatus.MEMBER_NOT_FOUND);
         }
         try {
             // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
@@ -69,14 +73,11 @@ public class UserService {
             TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
             Member member = memberRepository.findByEmail(userLoginRequestDTO.getEmail())
                     .orElseThrow();
-            return response.success(
-                    UserResponseDTO.builder().tokenInfo(tokenInfo).nickName(member.getNickname())
-                            .build()
-                    , "로그인에 성공했습니다.", HttpStatus.OK);
+            return ApiResponse.of(SuccessStatus._LOGIN_SUCCESS, UserResponseDTO.builder().tokenInfo(tokenInfo).nickName(member.getNickname())
+                    .build());
         } catch (AuthenticationException e) {
             // Handle authentication failure, e.g., incorrect password
-            return response.fail("아이디(이메일) 또는 비밀번호를 잘못 입력했습니다."
-                    + "입력하신 내용을 다시 확인해주세요.", HttpStatus.UNAUTHORIZED);
+            throw new UserHandler(ErrorStatus.MEMBER_LOGIN_FAILURE);
         }
     }
 
@@ -113,6 +114,7 @@ public class UserService {
      */
 
 
+    /*
     public ResponseEntity<?> authority() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)
@@ -123,7 +125,7 @@ public class UserService {
 
         return response.success();
     }
-
+     */
     public Member findByEmail(String email) {
         Member member =
                 memberRepository

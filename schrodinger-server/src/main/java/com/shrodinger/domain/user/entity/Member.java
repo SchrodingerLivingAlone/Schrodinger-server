@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.persistence.*;
 
 import com.shrodinger.domain.common.YesNo;
+import com.shrodinger.domain.neighborhood.entity.Neighborhood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,12 +41,14 @@ public class Member implements UserDetails {
     @Column
     private String nickname; // 닉네임
 
-    //private String profileImage;
-
     /*
-    @Enumerated(value = STRING)
-    @Column(nullable = false)
-    private YesNo townCert;
+    @Column(name = "profile_image")
+    private String profileImage;
+     */
+    /*
+    @ManyToOne
+    @JoinColumn(name = "neighborhood_id") // name should match the referencedColumnName in @ManyToOne
+    private Neighborhood neighborhood;
      */
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
