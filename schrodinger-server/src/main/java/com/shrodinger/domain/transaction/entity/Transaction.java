@@ -37,10 +37,10 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private Long price;
 
-    @Enumerated(value = STRING)
+    @Enumerated(value = EnumType.STRING)
     private PayCategory payCategory;  //현금, 체크카드 등
 
-    @Enumerated(value = STRING)
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private TransactionCategory transactionCategory;  //식비, 교육 등
 
