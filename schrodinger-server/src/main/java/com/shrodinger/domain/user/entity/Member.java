@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.*;
 
-import com.shrodinger.domain.common.YesNo;
-import com.shrodinger.domain.neighborhood.entity.Neighborhood;
+import com.shrodinger.domain.acoountbook.entity.AccountBook;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +49,11 @@ public class Member implements UserDetails {
     @JoinColumn(name = "neighborhood_id") // name should match the referencedColumnName in @ManyToOne
     private Neighborhood neighborhood;
      */
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<AccountBook> accountBooks = new ArrayList<>();
+
+
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

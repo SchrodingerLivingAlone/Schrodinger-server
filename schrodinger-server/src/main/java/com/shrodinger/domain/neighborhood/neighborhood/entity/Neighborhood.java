@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.entity;
+package com.shrodinger.domain.neighborhood.neighborhood.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
 import com.shrodinger.domain.user.entity.Member;

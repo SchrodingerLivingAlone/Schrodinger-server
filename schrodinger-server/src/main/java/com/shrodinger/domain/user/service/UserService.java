@@ -2,10 +2,8 @@ package com.shrodinger.domain.user.service;
 
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.JwtTokenProvider;
-import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.jwt.TokenInfo;
 import com.shrodinger.common.response.ApiResponse;
-import com.shrodinger.common.response.BaseCode;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
@@ -19,13 +17,10 @@ import java.util.Collections;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

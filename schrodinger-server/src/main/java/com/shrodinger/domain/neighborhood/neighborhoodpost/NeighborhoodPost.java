@@ -1,7 +1,7 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
-import com.shrodinger.domain.neighborhood.entity.Neighborhood;
+import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @JoinColumn(name = "neighborhood_id", nullable = false)
     private Neighborhood neighborhood;
 
-    @Enumerated(value = STRING)
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private NeighborhoodBoardCategory category;
 

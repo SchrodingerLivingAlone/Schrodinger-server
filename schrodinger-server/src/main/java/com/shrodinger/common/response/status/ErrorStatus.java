@@ -12,8 +12,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 가장 일반적인 응답
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
-    _BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
-    _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
+    _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
+    _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
 
@@ -27,9 +27,15 @@ public enum ErrorStatus implements BaseErrorCode {
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),
     NEIGHBORHOOD_NOT_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4003", "동네가 존재하지 않습니다."),
 
+    //가계부 관련 에러
+    ACCOUNT_BOOK_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT_BOOK4001", "이미 가계부가 존재합니다."),
+    ACCOUNT_BOOK_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "ACCOUNT_BOOK4002", "가계부 생성 유효성 검사 실패"),
+    ACCOUNT_BOOK_NOT_EXIST(HttpStatus.NOT_FOUND, "ACCOUNT_BOOK4003", "가계부가 존재하지 않습니다."),
+    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
-    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다.");
-
+    //거래 관련 에러
+    TRANSACTION_TYPE_NOT_MATCH(HttpStatus.BAD_REQUEST, "TRANSACTION_4001", "잘못된 트랜잭션 타입 입력입니다. 수입과 지출을 잘 맞춰주세요!"),
+    TRANSACTION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "TRANSACTION_4002", "트랜잭션 관련 json 요청 유효성 검사 실패");
 
     private final HttpStatus httpStatus;
     private final String code;
