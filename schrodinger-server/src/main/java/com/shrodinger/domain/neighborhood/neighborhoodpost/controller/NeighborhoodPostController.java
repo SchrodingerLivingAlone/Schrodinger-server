@@ -5,6 +5,7 @@ import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostRequestDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.service.NeighborhoodPostService;
 import com.shrodinger.domain.transaction.dto.CreateTransactionRequestDTO;
 import com.shrodinger.domain.user.dto.UserNeighborhoodResponseDTO;
@@ -37,10 +38,18 @@ public class NeighborhoodPostController {
     }
 
     @PostMapping("/posts")
-    public ApiResponse postBoard(@Validated @RequestBody CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO ,Errors errors) {
+    public ApiResponse createPost(@Validated @RequestBody CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO ,Errors errors) {
         if(errors.hasErrors()){
             return ApiResponse.onFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getCode(), ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
         }
-        return ApiResponse.onSuccess(neighborhoodPostService.createNeighborhoodPost(createNeighborhoodPostRequestDTO));
+        return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS ,neighborhoodPostService.createNeighborhoodPost(createNeighborhoodPostRequestDTO));
     }
+
+    @GetMapping("/posts")
+    public ApiResponse getAllPostsBySortOption(@RequestParam("sortBy") int sort, @RequestParam("category") int category) {
+        NeighborhoodPostCategory neighborhoodPostCategory = NeighborhoodPostCategory.valueOf(category);
+        return ApiResponse.of(SuccessStatus.GET_NEIGHBORHOOD_POSTS_BY_SORT,neighborhoodPostService.getAllPosts(sort,neighborhoodPostCategory));
+    }
+
+
 }

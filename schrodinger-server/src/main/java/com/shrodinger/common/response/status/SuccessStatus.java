@@ -32,6 +32,7 @@ public enum SuccessStatus implements BaseCode {
     GET_TRANSACTIONS_SUCCESS(HttpStatus.OK, "TRANSACTION_200", "거래 내역 조회 성공"),
 
     CREATE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.CREATED, "NEIGHBORHOOD_POST_201", "동네 게시글 생성 성공"),
+    GET_NEIGHBORHOOD_POSTS_BY_SORT(HttpStatus.OK, "NEIGHBORHOOD_200", "동네 게시글 조회 성공")
     ;
 
     private final HttpStatus httpStatus;

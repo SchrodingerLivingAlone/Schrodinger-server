@@ -1,11 +1,10 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.repository;
 
 
+import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
-import org.springframework.data.domain.Pageable;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
@@ -13,6 +12,8 @@ import java.util.List;
 
 @Repository
 public interface NeighborhoodPostRepository extends JpaRepository<NeighborhoodPost, Long> {
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(Neighborhood neighborhood, NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodOrderByView(Neighborhood neighborhood);
 
     /*
     @Query(value = "SELECT dongnae_board.*, COUNT(dongnae_sympathy.dongnae_board_id) AS likes FROM dongnae_board\n" +

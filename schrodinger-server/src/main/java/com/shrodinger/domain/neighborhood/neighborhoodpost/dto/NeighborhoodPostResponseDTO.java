@@ -27,13 +27,13 @@ public class NeighborhoodPostResponseDTO {
     private int view;
 
 
-
-    private static NeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
+    public static NeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())
+                .content(neighborhoodPost.getContent())
                 .imageUrl(neighborhoodPost.getNeighborhoodPostImages().get(0).getImageUrl())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))
                 .view(neighborhoodPost.getView())
