@@ -36,10 +36,7 @@ public class Neighborhood extends BaseTimeEntity {
     @Column(nullable = false)
     private String dong; // 동
 
-    /*
     @OneToMany(mappedBy = "neighborhood", cascade = CascadeType.ALL)
     private List<Member> members = new ArrayList<>();
-
-     */
 
 }

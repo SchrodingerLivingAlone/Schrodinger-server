@@ -42,7 +42,6 @@ public class UserController {
     @PostMapping("/login")
     public ApiResponse login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO,
                              Errors errors) {
-
         if (errors.hasErrors()) {
             ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
         }

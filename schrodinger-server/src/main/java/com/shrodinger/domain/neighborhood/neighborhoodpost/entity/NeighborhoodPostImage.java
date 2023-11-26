@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.neighborhoodpost;
+package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;

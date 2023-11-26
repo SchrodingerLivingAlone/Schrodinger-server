@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.neighborhoodpost;
+package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
@@ -11,7 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-import static javax.persistence.EnumType.STRING;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
@@ -26,7 +27,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "dongnae_board_id")
+    @Column(name = "neighborhood_board_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -39,7 +40,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private NeighborhoodBoardCategory category;
+    private NeighborhoodPostCategory neighborhoodPostCategory;
 
     @Column(nullable = false)
     private String title;
@@ -51,9 +52,10 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer view = 0;
 
+    @OneToMany(mappedBy = "neighborhoodPost")
+    private List<NeighborhoodPostImage> neighborhoodPostImages;
 
     private String place;   // 사용자 장소 공유시 장소 이름(ex. "00키친")
-    private String placeLocation;  // 장소의 정확한 위치
 
     /*
     public void updateBoard(DongnaeBoardDto.Request request) {

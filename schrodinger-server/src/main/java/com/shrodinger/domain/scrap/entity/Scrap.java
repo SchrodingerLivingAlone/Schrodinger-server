@@ -1,7 +1,7 @@
 package com.shrodinger.domain.scrap.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.NeighborhoodPost;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

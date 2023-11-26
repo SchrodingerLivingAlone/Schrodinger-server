@@ -34,8 +34,12 @@ public enum ErrorStatus implements BaseErrorCode {
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
     //거래 관련 에러
+
     TRANSACTION_TYPE_NOT_MATCH(HttpStatus.BAD_REQUEST, "TRANSACTION_4001", "잘못된 트랜잭션 타입 입력입니다. 수입과 지출을 잘 맞춰주세요!"),
-    TRANSACTION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "TRANSACTION_4002", "트랜잭션 관련 json 요청 유효성 검사 실패");
+    TRANSACTION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "TRANSACTION_4002", "트랜잭션 관련 json 요청 유효성 검사 실패"),
+
+    //게시글 관련 에러
+    NEIGHBORHOOD_POST_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4002", "게시물 생성 관련 json 요청 유효성 검사 실패");
 
     private final HttpStatus httpStatus;
     private final String code;

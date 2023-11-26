@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.*;
-
 import com.shrodinger.domain.acoountbook.entity.AccountBook;
+import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,15 +40,12 @@ public class Member implements UserDetails {
     @Column
     private String nickname; // 닉네임
 
-    /*
     @Column(name = "profile_image")
     private String profileImage;
-     */
-    /*
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "neighborhood_id") // name should match the referencedColumnName in @ManyToOne
     private Neighborhood neighborhood;
-     */
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<AccountBook> accountBooks = new ArrayList<>();

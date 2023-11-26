@@ -9,6 +9,7 @@ import com.shrodinger.domain.transaction.entity.TransactionCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 
@@ -18,11 +19,13 @@ import javax.validation.constraints.NotNull;
 public class CreateTransactionRequestDTO{
 
     @NotNull(message = "년도는 필수입니다")
+    @Range(min = 2000, max = 2500)
     private Integer year;
 
     @NotNull(message = "월은 필수입니다")
+    @Range(min = 1, max = 12, message = "12월까지만 입력해주세요")
     private Integer month;
-
+    @Range(min = 1, max = 31 , message = "1~31까지만 입력해주세요")
     @NotNull(message = "일은 필수입니다")
     private Integer day;
 

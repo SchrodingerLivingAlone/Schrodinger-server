@@ -1,11 +1,14 @@
 package com.shrodinger.domain.user.service;
 
+import com.shrodinger.common.exception.handler.NeighborhoodHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.JwtTokenProvider;
 import com.shrodinger.common.jwt.TokenInfo;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
+import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
+import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
 import com.shrodinger.domain.user.dto.UserResponseDTO;
 import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
@@ -33,17 +36,23 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final NeighborhoodRepository neighborhoodRepository;
 
     public ApiResponse signUp(UserSignUpRequestDto signUp) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXIST);
         }
-
+        if (!neighborhoodRepository.existsByCityAndGuAndDong(signUp.getCity()
+                ,signUp.getGu(), signUp.getDong())){
+            throw new NeighborhoodHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST);
+        }
+        Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong());
         Member user = Member.builder()
                 .email(signUp.getEmail())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .nickname(signUp.getNickname())
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
+                .neighborhood(neighborhood)
                 .build();
         memberRepository.save(user);
 
