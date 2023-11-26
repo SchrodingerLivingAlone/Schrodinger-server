@@ -16,6 +16,8 @@ public enum SuccessStatus implements BaseCode {
     // 회원가입 응답
     _SIGNUP_SUCCESS(HttpStatus.OK, "SIGNUP200", "회원가입 성공입니다."),
     _LOGIN_SUCCESS(HttpStatus.OK, "LOGIN200", "로그인 성공입니다."),
+
+    IMAG_UPLOAD_SUCCESS(HttpStatus.OK, "IMAGE200", "이미지 업로드 성공입니다."),
     // 멤버 관련 응답
 
     // ~~~ 관련 응답
