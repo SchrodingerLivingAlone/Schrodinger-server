@@ -12,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -69,5 +70,15 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
     public void updateView() {
         this.view +=1;
+    }
+
+    public void updateImages(List<NeighborhoodPostImage> neighborhoodPostImages) {
+        this.neighborhoodPostImages = neighborhoodPostImages;
+    }
+
+    public List<String> fromImages() {
+        return neighborhoodPostImages.stream()
+                .map(NeighborhoodPostImage::getImageUrl)
+                .collect(Collectors.toList());
     }
 }

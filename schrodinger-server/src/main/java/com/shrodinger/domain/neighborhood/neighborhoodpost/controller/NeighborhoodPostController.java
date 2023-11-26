@@ -4,8 +4,10 @@ import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostRequestDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.service.NeighborhoodPostService;
 import com.shrodinger.domain.transaction.dto.CreateTransactionRequestDTO;
+import com.shrodinger.domain.user.dto.UserNeighborhoodResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -22,17 +24,23 @@ import static com.shrodinger.common.util.ValidationUtils.getValidationErrors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/NeighborPosts")
+@RequestMapping("/api/neighborhood")
 public class NeighborhoodPostController {
 
-    NeighborhoodPostService neighborhoodPostService;
+    private final NeighborhoodPostService neighborhoodPostService;
     /*
      * [동네정보] 사용자 위치 정보
      */
-    @GetMapping("/user/location")
+    @GetMapping("/location")
     public ApiResponse getLocation() {
         return ApiResponse.onSuccess(neighborhoodPostService.getUserLocation());
     }
 
-
+    @PostMapping("/posts")
+    public ApiResponse postBoard(@Validated @RequestBody CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO ,Errors errors) {
+        if(errors.hasErrors()){
+            return ApiResponse.onFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getCode(), ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
+        }
+        return ApiResponse.onSuccess(neighborhoodPostService.createNeighborhoodPost(createNeighborhoodPostRequestDTO));
+    }
 }

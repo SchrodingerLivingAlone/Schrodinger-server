@@ -19,7 +19,7 @@ import java.util.List;
 public class CreateNeighborhoodPostRequestDTO {
 
     @NotNull(message = "카테고리는 필수입니다.")
-    private NeighborhoodPostCategory neighborhoodPostCategory;
+    private NeighborhoodPostCategory category;
 
     @NotNull(message = "제목은 필수입니다.")
     private String title;
@@ -33,17 +33,16 @@ public class CreateNeighborhoodPostRequestDTO {
     private String place;
 
 
-    public NeighborhoodPost toEntity(Member member, List<NeighborhoodPostImage> neighborhoodPostImages) {
-
+    public NeighborhoodPost toEntity(Member member) {
         return NeighborhoodPost.builder()
                 .member(member)
                 .neighborhood(member.getNeighborhood())
-                .neighborhoodPostCategory(neighborhoodPostCategory)
+                .neighborhoodPostCategory(category)
                 .title(title)
                 .content(content)
                 .place(place)
-                .neighborhoodPostImages(neighborhoodPostImages)
                 .view(0)
                 .build();
     }
+
 }

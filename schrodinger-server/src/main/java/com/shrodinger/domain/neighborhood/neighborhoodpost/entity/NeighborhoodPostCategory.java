@@ -1,5 +1,6 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -23,5 +24,9 @@ public enum NeighborhoodPostCategory {
             }
         }
         throw new IllegalArgumentException("Invalid Category: " + value);
+    }
+    @JsonValue
+    public String getCategory() {
+        return this.category;
     }
 }

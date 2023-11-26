@@ -4,6 +4,10 @@ import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostRequestDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostResponseDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostImage;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.repository.*;
 import com.shrodinger.domain.user.dto.UserNeighborhoodResponseDTO;
 import com.shrodinger.domain.user.entity.Member;
@@ -11,6 +15,7 @@ import com.shrodinger.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,9 +29,17 @@ public class NeighborhoodPostService {
     private final NeighborhoodRepository neighborhoodRepository;
 
     public UserNeighborhoodResponseDTO getUserLocation() {
-        return UserNeighborhoodResponseDTO.builder()
-                .town(getMemberFromToken().getNeighborhood().getDong()).build();
+        return UserNeighborhoodResponseDTO.builder().town(getMemberFromToken().getNeighborhood().getDong()).build();
     }
+    public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
+        Member member = getMemberFromToken();
+        NeighborhoodPost neighborhoodPost = createNeighborhoodPostRequestDTO.toEntity(member);
+        neighborhoodPost.updateImages(convertToNeighborhoodPostImageList(createNeighborhoodPostRequestDTO.getImages(),neighborhoodPost));
+        neighborhoodPostRepository.save(neighborhoodPost);
+        return CreateNeighborhoodPostResponseDTO.from(neighborhoodPost);
+    }
+
+
     /*
     public void createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
         Member member = getMemberFromToken();
@@ -55,6 +68,18 @@ public class NeighborhoodPostService {
         Member member = memberRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserHandler(ErrorStatus._UNAUTHORIZED));
         return member;
+    }
+    public List<NeighborhoodPostImage> convertToNeighborhoodPostImageList(List<String> images , NeighborhoodPost neighborhoodPost) {
+        List<NeighborhoodPostImage> neighborhoodPostImages = new ArrayList<>();
+        for (String imageUrl : images) {
+            // NeighborhoodPostImage 객체 생성
+            NeighborhoodPostImage neighborhoodPostImage = NeighborhoodPostImage.builder()
+                    .neighborhoodPost(neighborhoodPost)
+                    .imageUrl(imageUrl)
+                    .build();
+            neighborhoodPostImages.add(neighborhoodPostImage);
+        }
+        return neighborhoodPostImages;
     }
 
 

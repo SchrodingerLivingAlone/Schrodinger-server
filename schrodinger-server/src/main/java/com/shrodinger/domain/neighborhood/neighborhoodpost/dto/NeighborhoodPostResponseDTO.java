@@ -26,21 +26,17 @@ public class NeighborhoodPostResponseDTO {
 
     private int view;
 
-    private int commentCount;
 
-    private int likes;
 
-    /*
-    private static NeighborhoodPostsResponseDTO from(NeighborhoodPost neighborhoodPost , String oneImage) {
+    private static NeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())
-                .imageUrl(oneImage)
+                .imageUrl(neighborhoodPost.getNeighborhoodPostImages().get(0).getImageUrl())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))
                 .view(neighborhoodPost.getView())
+                .build();
     }
-
-     */
 }
