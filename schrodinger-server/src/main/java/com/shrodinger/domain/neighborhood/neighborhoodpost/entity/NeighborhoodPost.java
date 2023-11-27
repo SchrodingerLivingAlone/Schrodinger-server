@@ -2,6 +2,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.UpdateNeighborhoodPostRequestDTO;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -51,20 +52,30 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer view = 0;
 
-    @OneToMany(mappedBy = "neighborhoodPost")
+    @OneToMany(mappedBy = "neighborhoodPost" ,cascade = CascadeType.ALL)
     private List<NeighborhoodPostImage> neighborhoodPostImages;
 
     private String place;   // 사용자 장소 공유시 장소 이름(ex. "00키친")
 
-    /*
-    public void updateBoard(DongnaeBoardDto.Request request) {
-        this.category = DongnaeBoardCategory.valueOf(request.getCategory());
-        this.title = request.getTitle();
-        this.content = request.getContent();
-        this.place = request.getPlace();
-        this.placeLocation = request.getPlaceLocation();
+
+    public void updateBoard(UpdateNeighborhoodPostRequestDTO updateNeighborhoodPostRequestDTO) {
+        this.neighborhoodPostCategory = updateNeighborhoodPostRequestDTO.getCategory();
+        this.title = updateNeighborhoodPostRequestDTO.getTitle();
+        this.content = updateNeighborhoodPostRequestDTO.getContent();
+        this.place = updateNeighborhoodPostRequestDTO.getPlace();
+        List<String> updatedImageUrls = updateNeighborhoodPostRequestDTO.getImages();
+
+        for (int i = 0; i < Math.min(neighborhoodPostImages.size(), updatedImageUrls.size()); i++) {
+            neighborhoodPostImages.get(i).setImageUrl(updatedImageUrls.get(i));
+        }
+        for (int i = neighborhoodPostImages.size(); i < updatedImageUrls.size(); i++) {
+            neighborhoodPostImages.add(NeighborhoodPostImage.builder()
+                    .neighborhoodPost(this)
+                    .imageUrl(updatedImageUrls.get(i))
+                    .build());
+        }
+
     }
-     */
 
     public void updateView() {
         this.view +=1;

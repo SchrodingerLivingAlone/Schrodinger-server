@@ -1,13 +1,12 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.service;
 
+import com.shrodinger.common.exception.handler.NeighborhoodHandler;
+import com.shrodinger.common.exception.handler.NeighborhoodPostHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostRequestDTO;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.CreateNeighborhoodPostResponseDTO;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPostResponseDTO;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPostsResponseDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.*;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostImage;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,6 +74,30 @@ public class NeighborhoodPostService {
         }
     }
 
+    public NeighborhoodPostResponseDTO updatePost(long post_id, UpdateNeighborhoodPostRequestDTO updateNeighborhoodPostRequestDTO) {
+        Member member = getMemberFromToken();
+        validateMember(member,post_id);
+        NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
+                () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
+        post.updateBoard(updateNeighborhoodPostRequestDTO);
+        neighborhoodPostRepository.save(post);
+        return NeighborhoodPostResponseDTO.from(post);
+    }
+
+    public void deletePost(long post_id) {
+        Member member = getMemberFromToken();
+        validateMember(member,post_id);
+        NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
+                () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
+        neighborhoodPostRepository.delete(post);
+    }
+    public NeighborhoodPostDetailResponseDTO getPost (long post_id){
+        NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
+                () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
+        post.updateView();
+        neighborhoodPostRepository.save(post);
+        return NeighborhoodPostDetailResponseDTO.from(post);
+    }
 
     /*
     public void createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
@@ -114,6 +139,12 @@ public class NeighborhoodPostService {
             neighborhoodPostImages.add(neighborhoodPostImage);
         }
         return neighborhoodPostImages;
+    }
+
+    public void validateMember(Member member, Long post_id){
+        if (!neighborhoodPostRepository.existsByMemberAndId(member, post_id)) {
+            throw new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_OWNER_ERROR);
+        }
     }
 
 

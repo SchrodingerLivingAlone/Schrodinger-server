@@ -4,17 +4,21 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.repository;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
+import com.shrodinger.domain.user.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NeighborhoodPostRepository extends JpaRepository<NeighborhoodPost, Long> {
     List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(Neighborhood neighborhood, NeighborhoodPostCategory category);
     List<NeighborhoodPost> findAllByNeighborhoodOrderByView(Neighborhood neighborhood);
+    Optional<NeighborhoodPost> findById(Long id);
 
+    boolean existsByMemberAndId(Member member , Long id);
     /*
     @Query(value = "SELECT dongnae_board.*, COUNT(dongnae_sympathy.dongnae_board_id) AS likes FROM dongnae_board\n" +
             "LEFT JOIN dongnae_sympathy ON  dongnae_board.dongnae_board_id = dongnae_sympathy.dongnae_board_id\n" +

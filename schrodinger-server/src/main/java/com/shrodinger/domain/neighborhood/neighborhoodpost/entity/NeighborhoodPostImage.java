@@ -1,10 +1,7 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Builder
+@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Entity
