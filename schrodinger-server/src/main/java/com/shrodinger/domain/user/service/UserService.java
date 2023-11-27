@@ -3,6 +3,7 @@ package com.shrodinger.domain.user.service;
 import com.shrodinger.common.exception.handler.NeighborhoodHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.JwtTokenProvider;
+import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.jwt.TokenInfo;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
@@ -10,6 +11,7 @@ import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
+import com.shrodinger.domain.user.dto.UserProfileResponseDTO;
 import com.shrodinger.domain.user.dto.UserResponseDTO;
 import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
 import com.shrodinger.domain.user.entity.Authority;
@@ -130,6 +132,17 @@ public class UserService {
         return response.success();
     }
      */
+    public UserProfileResponseDTO getUserProfile(){
+        Member member = getMemberFromToken();
+        return UserProfileResponseDTO.from(member);
+    }
+
+    private Member getMemberFromToken() {
+        String userEmail = SecurityUtil.getCurrentUserEmail();
+        Member member = memberRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserHandler(ErrorStatus._UNAUTHORIZED));
+        return member;
+    }
     public Member findByEmail(String email) {
         Member member =
                 memberRepository

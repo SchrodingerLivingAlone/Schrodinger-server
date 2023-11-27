@@ -4,7 +4,6 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.controller;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.service.NeighborhoodHeartService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

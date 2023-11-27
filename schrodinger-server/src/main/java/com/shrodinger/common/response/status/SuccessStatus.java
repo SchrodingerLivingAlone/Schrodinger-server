@@ -19,7 +19,7 @@ public enum SuccessStatus implements BaseCode {
 
     IMAG_UPLOAD_SUCCESS(HttpStatus.OK, "IMAGE200", "이미지 업로드 성공입니다."),
     // 멤버 관련 응답
-
+    GET_PROFILE_SUCCESS(HttpStatus.OK,"USER200","프로필 가져오기 성공"),
     // ~~~ 관련 응답
 
     //가계부 관련 응답

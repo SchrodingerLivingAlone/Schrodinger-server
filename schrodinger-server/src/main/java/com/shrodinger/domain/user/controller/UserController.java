@@ -5,6 +5,7 @@ import com.shrodinger.common.jwt.Helper;
 import com.shrodinger.common.jwt.JwtTokenProvider;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
+import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
 import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
 import com.shrodinger.domain.user.service.UserService;
@@ -46,6 +47,11 @@ public class UserController {
             ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
         }
         return usersService.login(userLoginRequestDTO);
+    }
+
+    @GetMapping("/profile")
+    public ApiResponse getUserProfile() {
+        return ApiResponse.of(SuccessStatus.GET_PROFILE_SUCCESS,usersService.getUserProfile());
     }
 
     private Map<String, String> getValidationErrors(Errors errors) {
