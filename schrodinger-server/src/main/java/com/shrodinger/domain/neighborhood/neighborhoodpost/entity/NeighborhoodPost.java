@@ -52,6 +52,16 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer view;
 
+
+    @Column(name = "like_count", nullable = false)
+    @ColumnDefault("0")
+    private Integer likeCount;
+
+
+    @Column(name = "comment_count", nullable = false)
+    @ColumnDefault("0")
+    private Integer commentCount;
+
     @OneToMany(mappedBy = "neighborhoodPost" ,cascade = CascadeType.ALL)
     private List<NeighborhoodPostImage> neighborhoodPostImages;
 
@@ -80,6 +90,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
     public void updateView() {
         this.view +=1;
     }
+    public void upCommentCount(){this.commentCount +=1;}
 
     public void updateImages(List<NeighborhoodPostImage> neighborhoodPostImages) {
         this.neighborhoodPostImages = neighborhoodPostImages;

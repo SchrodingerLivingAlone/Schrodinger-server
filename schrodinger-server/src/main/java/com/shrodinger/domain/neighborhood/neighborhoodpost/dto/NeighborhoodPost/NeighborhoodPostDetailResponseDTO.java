@@ -27,6 +27,9 @@ public class NeighborhoodPostDetailResponseDTO {
 
     private int view;
 
+    private int likeCount;
+    private int commentCount;
+
     public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
@@ -37,6 +40,9 @@ public class NeighborhoodPostDetailResponseDTO {
                 .imageUrls(neighborhoodPost.fromImages())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))
                 .view(neighborhoodPost.getView())
+                .likeCount(neighborhoodPost.getLikeCount())
+                .commentCount(neighborhoodPost.getCommentCount())
                 .build();
     }
+
 }

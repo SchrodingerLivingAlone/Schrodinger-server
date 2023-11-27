@@ -47,6 +47,8 @@ public class NeighborhoodCommentService {
                 .neighborhoodPost(post)
                 .member(member)
                 .build();
+        post.upCommentCount();
+        neighborhoodPostRepository.save(post);
         neighborhoodCommentRepository.save(comment);
         CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment);
         return commentResponseDTO;
