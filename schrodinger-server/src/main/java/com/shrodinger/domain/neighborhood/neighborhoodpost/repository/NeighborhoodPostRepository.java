@@ -17,6 +17,9 @@ public interface NeighborhoodPostRepository extends JpaRepository<NeighborhoodPo
     List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(Neighborhood neighborhood, NeighborhoodPostCategory category);
     List<NeighborhoodPost> findAllByNeighborhoodOrderByView(Neighborhood neighborhood);
     Optional<NeighborhoodPost> findById(Long id);
+    List<NeighborhoodPost> findAllByTitleContaining(String keyword);
+
+    List<NeighborhoodPost> findAllByContentContaining(String keyword);
 
     boolean existsByMemberAndId(Member member , Long id);
     /*

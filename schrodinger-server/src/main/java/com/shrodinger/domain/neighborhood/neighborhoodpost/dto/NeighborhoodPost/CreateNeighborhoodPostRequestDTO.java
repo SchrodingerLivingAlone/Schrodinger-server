@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.neighborhoodpost.dto;
+package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost;
 
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;

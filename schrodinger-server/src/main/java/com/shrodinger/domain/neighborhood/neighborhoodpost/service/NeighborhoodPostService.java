@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -99,29 +101,25 @@ public class NeighborhoodPostService {
         return NeighborhoodPostDetailResponseDTO.from(post);
     }
 
-    /*
-    public void createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
-        Member member = getMemberFromToken();
-        NeighborhoodPost = createNeighborhoodPostRequestDTO.
-        neighborhoodPostRepository.save(creareq.toEntity(user,/*user.getDongnae()dongnae));
-    }
-     */
-
-
-    /*
-    public ContentsDto searchByKeyword(String keyword, int category, Pageable pageable) {
-        String categoryName = DongnaeBoardCategory.valueOf(category).name();
-
-        List<DongnaeBoard> dongnaeBoardList = dongnaeBoardRepository.findByKeyword(keyword, categoryName, pageable);
-
-        if (dongnaeBoardList.isEmpty()) {
-            throw new CustomException(ErrorCode.NO_CONTENT_FOUND);
-        }
-
-        return new ContentsDto(getListResponses(dongnaeBoardList));
+    public List<NeighborhoodPostResponseDTO> getPostsByKeyword (String keyword){
+        List<NeighborhoodPostResponseDTO> postsByTitleKeyword = neighborhoodPostRepository.findAllByTitleContaining(keyword)
+                .stream()
+                .map(NeighborhoodPostResponseDTO::from)
+                .collect(Collectors.toList());
+        List<NeighborhoodPostResponseDTO> postsByContentKeyword = neighborhoodPostRepository.findAllByContentContaining(keyword)
+                .stream()
+                .map(NeighborhoodPostResponseDTO::from)
+                .collect(Collectors.toList());
+        List<NeighborhoodPostResponseDTO> combinedList = Stream.concat(postsByTitleKeyword.stream(), postsByContentKeyword.stream())
+                .collect(Collectors.toMap(NeighborhoodPostResponseDTO::getId, Function.identity(), (dto1, dto2) -> dto1))
+                .values()
+                .stream()
+                .collect(Collectors.toList());
+        return combinedList;
     }
 
-    */
+
+
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)

@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.neighborhoodpost.dto;
+package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost;
 
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
@@ -7,9 +7,10 @@ import lombok.Getter;
 
 import java.util.List;
 
+
 @Getter
 @Builder
-public class NeighborhoodPostResponseDTO {
+public class NeighborhoodPostDetailResponseDTO {
     private Long id;
 
     private String dong;
@@ -20,21 +21,20 @@ public class NeighborhoodPostResponseDTO {
 
     private String content;
 
-    private String imageUrl;
+    private List<String> imageUrls;
 
     private String createdAt;
 
     private int view;
 
-
-    public static NeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
-        return NeighborhoodPostResponseDTO.builder()
+    public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
+        return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())
                 .content(neighborhoodPost.getContent())
-                .imageUrl(neighborhoodPost.getNeighborhoodPostImages().get(0).getImageUrl())
+                .imageUrls(neighborhoodPost.fromImages())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))
                 .view(neighborhoodPost.getView())
                 .build();

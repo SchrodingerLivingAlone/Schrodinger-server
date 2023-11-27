@@ -1,4 +1,4 @@
-package com.shrodinger.domain.neighborhood.neighborhoodpost.dto;
+package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost;
 
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
@@ -7,10 +7,9 @@ import lombok.Getter;
 
 import java.util.List;
 
-
-@Getter
 @Builder
-public class NeighborhoodPostDetailResponseDTO {
+@Getter
+public class CreateNeighborhoodPostResponseDTO {
     private Long id;
 
     private String dong;
@@ -27,8 +26,8 @@ public class NeighborhoodPostDetailResponseDTO {
 
     private int view;
 
-    public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
-        return NeighborhoodPostDetailResponseDTO.builder()
+    public static CreateNeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
+        return CreateNeighborhoodPostResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
