@@ -43,8 +43,8 @@ public class AwsS3Service {
             } catch(IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
             }
-
-            fileNameList.add(fileName);
+            String fileLink = "https://schrodinger-cau.s3.ap-northeast-2.amazonaws.com/" + fileName;
+            fileNameList.add(fileLink);
         });
 
         return fileNameList;
