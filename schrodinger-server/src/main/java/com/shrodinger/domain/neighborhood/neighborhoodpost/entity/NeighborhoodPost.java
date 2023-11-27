@@ -2,7 +2,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 
 import com.shrodinger.common.entity.BaseTimeEntity;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.UpdateNeighborhoodPostRequestDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.UpdateNeighborhoodPostRequestDTO;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -50,7 +50,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
     @Column(name = "view", nullable = false)
     @ColumnDefault("0")
-    private Integer view = 0;
+    private Integer view;
 
     @OneToMany(mappedBy = "neighborhoodPost" ,cascade = CascadeType.ALL)
     private List<NeighborhoodPostImage> neighborhoodPostImages;

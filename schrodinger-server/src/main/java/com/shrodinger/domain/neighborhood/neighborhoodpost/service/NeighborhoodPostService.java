@@ -1,12 +1,11 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.service;
 
-import com.shrodinger.common.exception.handler.NeighborhoodHandler;
 import com.shrodinger.common.exception.handler.NeighborhoodPostHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.*;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.*;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostImage;
@@ -20,8 +19,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

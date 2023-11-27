@@ -35,7 +35,12 @@ public enum SuccessStatus implements BaseCode {
     GET_NEIGHBORHOOD_POSTS_BY_SORT(HttpStatus.OK, "NEIGHBORHOOD_200", "동네 게시글들 조회 성공"),
     GET_NEIGHBORHOOD_POST(HttpStatus.OK, "NEIGHBORHOOD_200", "게시글 상세 조회 성공"),
     UPDATE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_200", "게시물 수정 성공"),
-    DELETE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_200", "게시글 삭제 성공");
+    DELETE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_200", "게시글 삭제 성공"),
+
+    //댓글
+    CREAT_NEIGHBORHOOD_POST_COMMENT_SUCCESS(HttpStatus.CREATED, "NEIGHBORHOOD_COMMENT_201", "댓글 생성 성공"),
+    GET_NEIGHBORHOOD_COMMENTS_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_COMMENT_200", "댓글들 조회 성공");
+
 
     private final HttpStatus httpStatus;
     private final String code;
