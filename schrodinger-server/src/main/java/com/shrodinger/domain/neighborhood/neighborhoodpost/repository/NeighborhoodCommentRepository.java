@@ -2,6 +2,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.repository;
 
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodComment;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
+import com.shrodinger.domain.user.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,9 @@ import java.util.List;
 public interface NeighborhoodCommentRepository extends JpaRepository<NeighborhoodComment, Long> {
 
     List<NeighborhoodComment> findAllByNeighborhoodPostId(Long id);
+
+    List<NeighborhoodComment> findAllByMember(Member member);
+
 
     /*public int countAllByNeighborhoodPostId(Long NeighborhoodPostId);
     public int countAllByUserId(Long userId);

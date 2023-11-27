@@ -4,6 +4,7 @@ import com.shrodinger.common.exception.handler.NeighborhoodPostHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.NeighborhoodPostResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodHeart;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.repository.NeighborhoodHeartRepository;
@@ -13,6 +14,9 @@ import com.shrodinger.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,15 @@ public class NeighborhoodHeartService {
         }
 
     }
+    public List<NeighborhoodPostResponseDTO> getLikedPosts(){
+        Member member = getMemberFromToken();
+        List<NeighborhoodHeart> neighborhoodHearts = neighborhoodHeartRepository.findAllByMember(member);
+        return neighborhoodHearts.stream()
+                .map(NeighborhoodHeart::getNeighborhoodPost)
+                .map(NeighborhoodPostResponseDTO::from)
+                .collect(Collectors.toList());
+    }
+
 
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();

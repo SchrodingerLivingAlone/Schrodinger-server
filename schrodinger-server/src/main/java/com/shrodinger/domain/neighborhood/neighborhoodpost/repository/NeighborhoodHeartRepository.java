@@ -13,4 +13,6 @@ import java.util.List;
 public interface NeighborhoodHeartRepository extends JpaRepository<NeighborhoodHeart, Long> {
     boolean existsByMemberAndNeighborhoodPost(Member member, NeighborhoodPost neighborhoodPost);
     void deleteByMemberAndNeighborhoodPost(Member member, NeighborhoodPost neighborhoodPost);
+
+    List<NeighborhoodHeart> findAllByMember(Member member);
 }

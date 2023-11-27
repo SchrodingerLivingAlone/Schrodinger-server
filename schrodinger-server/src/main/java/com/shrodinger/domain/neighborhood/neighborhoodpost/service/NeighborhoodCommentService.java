@@ -3,10 +3,14 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.service;
 import com.shrodinger.common.exception.handler.NeighborhoodPostHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
+import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
+import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CommentResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CreateCommentRequestDTO;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.NeighborhoodPostResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodComment;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodHeart;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.repository.NeighborhoodCommentRepository;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.repository.NeighborhoodPostRepository;
@@ -15,6 +19,7 @@ import com.shrodinger.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +57,15 @@ public class NeighborhoodCommentService {
         neighborhoodCommentRepository.save(comment);
         CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment);
         return commentResponseDTO;
+    }
+
+    public List<NeighborhoodPostResponseDTO> getCommentedPosts(){
+        Member member = getMemberFromToken();
+        List<NeighborhoodComment> neighborhoodComments = neighborhoodCommentRepository.findAllByMember(member);
+        return neighborhoodComments.stream()
+                .map(NeighborhoodComment :: getNeighborhoodPost)
+                .map(NeighborhoodPostResponseDTO::from)
+                .collect(Collectors.toList());
     }
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();

@@ -35,4 +35,8 @@ public class NeighborhoodCommentController {
         CommentResponseDTO commentResponseDTO = neighborhoodCommentService.createComment(createCommentRequestDto, postId);
         return ApiResponse.of(SuccessStatus.CREAT_NEIGHBORHOOD_POST_COMMENT_SUCCESS, commentResponseDTO);
     }
+    @GetMapping("/posts")
+    public ApiResponse getCommentedPosts(){
+        return ApiResponse.of(SuccessStatus.GET_NEIGHBORHOOD_POST_BY_COMMENT, neighborhoodCommentService.getCommentedPosts());
+    }
 }

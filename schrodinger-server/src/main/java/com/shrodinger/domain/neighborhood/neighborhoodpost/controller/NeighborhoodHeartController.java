@@ -4,6 +4,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.controller;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.service.NeighborhoodHeartService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,11 @@ public class NeighborhoodHeartController {
         } else {
             return ApiResponse.of(SuccessStatus.CANCEL_NEIGHBORHOOD_POST_HEART_SUCCESS, "좋아요 취소 성공");
         }
+    }
+
+    @GetMapping("/posts")
+    public ApiResponse getLikedPosts(){
+        return ApiResponse.of(SuccessStatus.GET_NEIGHBORHOOD_POST_BY_LIKE, neighborhoodHeartService.getLikedPosts());
     }
 
 }
