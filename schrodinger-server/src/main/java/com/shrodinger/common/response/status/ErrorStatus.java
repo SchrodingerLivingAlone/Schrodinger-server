@@ -41,7 +41,10 @@ public enum ErrorStatus implements BaseErrorCode {
     //게시글 관련 에러
     NEIGHBORHOOD_POST_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4002", "게시물 생성 관련 json 요청 유효성 검사 실패"),
     NEIGHBORHOOD_POST_NOT_EXIST(HttpStatus.NOT_FOUND, "NEIGHBORHOOD_POST_4041", "해당 게시글이 존재하지 않습니다."),
-    NEIGHBORHOOD_POST_OWNER_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4001", "해당 유저가 글의 주인이 아닙니다.");
+    NEIGHBORHOOD_POST_OWNER_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4001", "해당 유저가 글의 주인이 아닙니다."),
+
+    SCRAP_ERROR(HttpStatus.BAD_REQUEST, "SCRAP_POST_ARGUMENT_ERROR","스크랩 대상 게시글이 존재하지 않습니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String code;

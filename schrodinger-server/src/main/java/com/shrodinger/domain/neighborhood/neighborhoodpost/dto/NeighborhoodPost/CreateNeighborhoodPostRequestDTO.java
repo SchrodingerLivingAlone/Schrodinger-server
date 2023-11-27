@@ -3,8 +3,6 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
-import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostImage;
-import com.shrodinger.domain.transaction.entity.TransactionCategory;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +40,8 @@ public class CreateNeighborhoodPostRequestDTO {
                 .content(content)
                 .place(place)
                 .view(0)
+                .commentCount(0)
+                .likeCount(0)
                 .build();
     }
 

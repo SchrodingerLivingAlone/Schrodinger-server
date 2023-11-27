@@ -3,6 +3,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.entity;
 import com.shrodinger.common.entity.BaseTimeEntity;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.UpdateNeighborhoodPostRequestDTO;
+import com.shrodinger.domain.scrap.entity.Scrap;
 import com.shrodinger.domain.user.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -62,9 +63,17 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer commentCount;
 
-    @OneToMany(mappedBy = "neighborhoodPost" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
     private List<NeighborhoodPostImage> neighborhoodPostImages;
 
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    private List<NeighborhoodComment> neighborhoodComments;
+
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    private List<NeighborhoodHeart> neighborhoodHearts;
+
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    private List<Scrap> scraps;
     private String place;   // 사용자 장소 공유시 장소 이름(ex. "00키친")
 
 
@@ -88,9 +97,12 @@ public class NeighborhoodPost extends BaseTimeEntity {
     }
 
     public void updateView() {
-        this.view +=1;
+        this.view += 1;
     }
-    public void upCommentCount(){this.commentCount +=1;}
+
+    public void upCommentCount() {
+        this.commentCount += 1;
+    }
 
     public void updateImages(List<NeighborhoodPostImage> neighborhoodPostImages) {
         this.neighborhoodPostImages = neighborhoodPostImages;
