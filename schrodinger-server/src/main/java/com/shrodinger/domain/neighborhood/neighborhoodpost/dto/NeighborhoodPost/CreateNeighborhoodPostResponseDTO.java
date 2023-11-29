@@ -20,6 +20,8 @@ public class CreateNeighborhoodPostResponseDTO {
 
     private String content;
 
+    private String place;
+
     private List<String> imageUrls;
 
     private String createdAt;
@@ -32,6 +34,7 @@ public class CreateNeighborhoodPostResponseDTO {
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())
+                .place(neighborhoodPost.getPlace())
                 .content(neighborhoodPost.getContent())
                 .imageUrls(neighborhoodPost.fromImages())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))

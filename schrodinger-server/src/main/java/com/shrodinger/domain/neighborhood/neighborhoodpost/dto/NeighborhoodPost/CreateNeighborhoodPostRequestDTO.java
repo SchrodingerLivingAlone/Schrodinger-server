@@ -25,8 +25,6 @@ public class CreateNeighborhoodPostRequestDTO {
     @NotNull(message = "내응은 필수입니다.")
     private String content;
 
-    private List<String> images;
-
     @NotNull(message = "장소는 필수입니다.")
     private String place;
 

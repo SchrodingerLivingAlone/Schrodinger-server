@@ -7,6 +7,8 @@ import lombok.Getter;
 
 import java.util.List;
 
+import static com.shrodinger.common.util.TimeUtils.TimeFormat;
+
 
 @Getter
 @Builder
@@ -24,6 +26,8 @@ public class NeighborhoodPostDetailResponseDTO {
     private List<String> imageUrls;
 
     private String createdAt;
+    private String calculatedTime;
+
 
     private int view;
 
@@ -39,6 +43,7 @@ public class NeighborhoodPostDetailResponseDTO {
                 .content(neighborhoodPost.getContent())
                 .imageUrls(neighborhoodPost.fromImages())
                 .createdAt(String.valueOf(neighborhoodPost.getCreatedAt()))
+                .calculatedTime(TimeFormat(neighborhoodPost.getCreatedAt()))
                 .view(neighborhoodPost.getView())
                 .likeCount(neighborhoodPost.getLikeCount())
                 .commentCount(neighborhoodPost.getCommentCount())

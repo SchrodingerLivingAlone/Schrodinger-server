@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.shrodinger.common.util.ValidationUtils.getValidationErrors;
 
@@ -32,11 +35,11 @@ public class NeighborhoodPostController {
     }
 
     @PostMapping("")
-    public ApiResponse createPost(@Validated @RequestBody CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO, Errors errors) {
+    public ApiResponse createPost(@Validated @RequestPart CreateNeighborhoodPostRequestDTO createjson, @RequestPart("file") List<MultipartFile> multipartFile,Errors errors) {
         if (errors.hasErrors()) {
             return ApiResponse.onFailure(ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR.getCode(), ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
         }
-        return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.createNeighborhoodPost(createNeighborhoodPostRequestDTO));
+        return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.createNeighborhoodPost(createjson,multipartFile ));
     }
 
     @GetMapping("")

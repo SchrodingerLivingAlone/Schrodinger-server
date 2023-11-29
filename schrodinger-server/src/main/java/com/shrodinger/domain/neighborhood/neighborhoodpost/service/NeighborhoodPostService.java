@@ -4,6 +4,7 @@ import com.shrodinger.common.exception.handler.NeighborhoodPostHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
+import com.shrodinger.common.s3.AwsS3Service;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.*;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
@@ -15,6 +16,7 @@ import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -31,19 +33,20 @@ public class NeighborhoodPostService {
     private final NeighborhoodCommentRepository neighborhoodCommentRepository;
     private final NeighborhoodHeartRepository neighborhoodHeartRepository;
     private final MemberRepository memberRepository;
+    private final AwsS3Service awsS3Service;
     private final NeighborhoodRepository neighborhoodRepository;
 
     public UserNeighborhoodResponseDTO getUserLocation() {
         return UserNeighborhoodResponseDTO.builder().town(getMemberFromToken().getNeighborhood().getDong()).build();
     }
     @Transactional
-    public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
+    public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO ,List<MultipartFile> multipartFile) {
         Member member = getMemberFromToken();
         NeighborhoodPost neighborhoodPost = createNeighborhoodPostRequestDTO.toEntity(member);
         neighborhoodPostRepository.save(neighborhoodPost);
 
         List<NeighborhoodPostImage> neighborhoodPostImages = new ArrayList<>();
-        for (String imageUrl : createNeighborhoodPostRequestDTO.getImages()) {
+        for (String imageUrl : awsS3Service.uploadImage(multipartFile)) {
             NeighborhoodPostImage neighborhoodPostImage = NeighborhoodPostImage.builder()
                     .neighborhoodPost(neighborhoodPost)
                     .imageUrl(imageUrl)
