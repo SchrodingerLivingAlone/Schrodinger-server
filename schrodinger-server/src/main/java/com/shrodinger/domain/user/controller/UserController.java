@@ -6,6 +6,7 @@ import com.shrodinger.common.jwt.JwtTokenProvider;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.CreateNeighborhoodPostRequestDTO;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
 import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
 import com.shrodinger.domain.user.service.UserService;
@@ -16,27 +17,28 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController
 @RequestMapping("/api/users")
+@RestController
 public class UserController {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService usersService;
 
-    @CrossOrigin
     @PostMapping("/sign-up")
-    public ApiResponse signUp(@Validated @RequestBody UserSignUpRequestDto signUp,
+    public ApiResponse signUp(@Validated @RequestPart(value = "signup") UserSignUpRequestDto signUp, @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles,
                               Errors errors) {
         if (errors.hasErrors()) {
             return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
         }
-        return usersService.signUp(signUp);
+        return usersService.signUp(signUp, multipartFiles);
     }
 
     @CrossOrigin
@@ -44,14 +46,14 @@ public class UserController {
     public ApiResponse login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO,
                              Errors errors) {
         if (errors.hasErrors()) {
-            ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
         }
         return usersService.login(userLoginRequestDTO);
     }
 
     @GetMapping("/profile")
     public ApiResponse getUserProfile() {
-        return ApiResponse.of(SuccessStatus.GET_PROFILE_SUCCESS,usersService.getUserProfile());
+        return ApiResponse.of(SuccessStatus.GET_PROFILE_SUCCESS, usersService.getUserProfile());
     }
 
     private Map<String, String> getValidationErrors(Errors errors) {

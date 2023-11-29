@@ -8,6 +8,7 @@ import com.shrodinger.common.jwt.TokenInfo;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
+import com.shrodinger.common.s3.AwsS3Service;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
 import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
@@ -19,6 +20,7 @@ import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
 
 import java.util.Collections;
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,10 +40,11 @@ public class UserService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AwsS3Service awsS3Service;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final NeighborhoodRepository neighborhoodRepository;
 
-    public ApiResponse signUp(UserSignUpRequestDto signUp) {
+    public ApiResponse signUp(UserSignUpRequestDto signUp , List<MultipartFile> multipartFiles) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXIST);
         }
@@ -49,15 +53,29 @@ public class UserService {
             throw new NeighborhoodHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST);
         }
         Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong());
-        Member user = Member.builder()
-                .email(signUp.getEmail())
-                .password(passwordEncoder.encode(signUp.getPassword()))
-                .nickname(signUp.getNickname())
-                .roles(Collections.singletonList(Authority.ROLE_USER.name()))
-                .neighborhood(neighborhood)
-                .build();
-        memberRepository.save(user);
-
+        if (multipartFiles == null){
+            Member user = Member.builder()
+                    .email(signUp.getEmail())
+                    .password(passwordEncoder.encode(signUp.getPassword()))
+                    .nickname(signUp.getNickname())
+                    .profileImage("https://schrodinger-cau.s3.ap-northeast-2.amazonaws.com/istockphoto-1214428300-612x612.jpeg")
+                    .roles(Collections.singletonList(Authority.ROLE_USER.name()))
+                    .neighborhood(neighborhood)
+                    .build();
+            memberRepository.save(user);
+        }
+        else {
+            String profileUrl = awsS3Service.uploadImage((List<MultipartFile>) multipartFiles).get(0);
+            Member user = Member.builder()
+                    .email(signUp.getEmail())
+                    .password(passwordEncoder.encode(signUp.getPassword()))
+                    .nickname(signUp.getNickname())
+                    .roles(Collections.singletonList(Authority.ROLE_USER.name()))
+                    .neighborhood(neighborhood)
+                    .profileImage(profileUrl)
+                    .build();
+            memberRepository.save(user);
+        }
         return ApiResponse.of(SuccessStatus._SIGNUP_SUCCESS, "회원가입 성공!");
     }
 
