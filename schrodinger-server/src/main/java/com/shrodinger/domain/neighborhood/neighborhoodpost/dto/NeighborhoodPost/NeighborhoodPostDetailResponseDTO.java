@@ -1,11 +1,13 @@
 package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost;
 
+import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CommentResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.shrodinger.common.util.TimeUtils.TimeFormat;
 
@@ -34,6 +36,8 @@ public class NeighborhoodPostDetailResponseDTO {
     private int likeCount;
     private int commentCount;
 
+    private List<CommentResponseDTO> comments;
+
     public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
@@ -47,6 +51,7 @@ public class NeighborhoodPostDetailResponseDTO {
                 .view(neighborhoodPost.getView())
                 .likeCount(neighborhoodPost.getLikeCount())
                 .commentCount(neighborhoodPost.getCommentCount())
+                .comments(neighborhoodPost.getNeighborhoodComments().stream().map(CommentResponseDTO::from).collect(Collectors.toList()))
                 .build();
     }
 

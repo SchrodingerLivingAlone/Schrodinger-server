@@ -9,11 +9,13 @@ import lombok.Getter;
 public class CommentResponseDTO {
     String nickname;
     String comment;
+    String profile_image;
 
     public static CommentResponseDTO from(NeighborhoodComment comment) {
         return CommentResponseDTO.builder()
                 .nickname(comment.getMember().getNickname())
                 .comment(comment.getContent())
+                .profile_image(comment.getMember().getProfileImage())
                 .build();
     }
 }
