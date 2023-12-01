@@ -36,7 +36,7 @@ public class UserController {
     public ApiResponse signUp(@Validated @RequestPart(value = "signup") UserSignUpRequestDto signUp, @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles,
                               Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrorList(errors));
         }
         return usersService.signUp(signUp, multipartFiles);
     }
@@ -46,7 +46,7 @@ public class UserController {
     public ApiResponse login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO,
                              Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrorList(errors));
         }
         return usersService.login(userLoginRequestDTO);
     }
@@ -63,6 +63,13 @@ public class UserController {
                         error -> error.getDefaultMessage()
                 ));
     }
+    private List<String> getValidationErrorList(Errors errors) {
+        return errors.getAllErrors().stream()
+                .map(error -> error.getDefaultMessage())
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }
