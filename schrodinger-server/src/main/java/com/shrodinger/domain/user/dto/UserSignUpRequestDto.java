@@ -3,13 +3,18 @@ package com.shrodinger.domain.user.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @Builder
 @Getter
 @Setter
+@Data
 public class UserSignUpRequestDto {
 
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "이메일 형식이 올바르지 않습니다.")
@@ -31,7 +36,6 @@ public class UserSignUpRequestDto {
     @NotBlank(message = "동(ex.상도동)은 필수 입력 값입니다.")
     private String dong;
 
-
-
+    List<MultipartFile> multipartFiles;
 
 }

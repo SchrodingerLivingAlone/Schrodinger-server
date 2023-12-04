@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,12 +34,12 @@ public class UserController {
     private final UserService usersService;
 
     @PostMapping("/sign-up")
-    public ApiResponse signUp(@Validated @RequestPart(value = "signup") UserSignUpRequestDto signUp, @RequestPart(value = "file", required = false) List<MultipartFile> multipartFiles,
+    public ApiResponse signUp(@Valid @ModelAttribute UserSignUpRequestDto userSignUpRequestDto,
                               Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrorList(errors));
+            return ApiResponse.ofFailure(ErrorStatus.MEMBER_SIGNUP_ERROR, getValidationErrorList(errors));
         }
-        return usersService.signUp(signUp, multipartFiles);
+        return usersService.signUp(userSignUpRequestDto);
     }
 
     @CrossOrigin
@@ -46,7 +47,7 @@ public class UserController {
     public ApiResponse login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO,
                              Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.MEMBER_SIGNUP_ERROR.getCode(), ErrorStatus.MEMBER_SIGNUP_ERROR.getMessage(), getValidationErrorList(errors));
+            return ApiResponse.ofFailure(ErrorStatus.MEMBER_SIGNUP_ERROR, getValidationErrorList(errors));
         }
         return usersService.login(userLoginRequestDTO);
     }

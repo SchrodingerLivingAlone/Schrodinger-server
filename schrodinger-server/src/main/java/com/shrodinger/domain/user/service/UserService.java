@@ -44,7 +44,7 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final NeighborhoodRepository neighborhoodRepository;
 
-    public ApiResponse signUp(UserSignUpRequestDto signUp , List<MultipartFile> multipartFiles) {
+    public ApiResponse signUp(UserSignUpRequestDto signUp) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             throw new UserHandler(ErrorStatus.EMAIL_ALREADY_EXIST);
         }
@@ -53,7 +53,7 @@ public class UserService {
             throw new NeighborhoodHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST);
         }
         Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong());
-        if (multipartFiles == null){
+        if (signUp.getMultipartFiles() == null){
             Member user = Member.builder()
                     .email(signUp.getEmail())
                     .password(passwordEncoder.encode(signUp.getPassword()))
@@ -65,7 +65,7 @@ public class UserService {
             memberRepository.save(user);
         }
         else {
-            String profileUrl = awsS3Service.uploadImage((List<MultipartFile>) multipartFiles).get(0);
+            String profileUrl = awsS3Service.uploadImage((List<MultipartFile>) signUp.getMultipartFiles()).get(0);
             Member user = Member.builder()
                     .email(signUp.getEmail())
                     .password(passwordEncoder.encode(signUp.getPassword()))

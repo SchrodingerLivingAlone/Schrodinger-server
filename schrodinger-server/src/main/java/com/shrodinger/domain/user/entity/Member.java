@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,6 +55,7 @@ public class Member implements UserDetails {
     @Column
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<String> roles = new ArrayList<>();
 
     @Override
