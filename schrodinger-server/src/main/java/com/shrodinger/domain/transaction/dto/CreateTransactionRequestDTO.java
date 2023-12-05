@@ -44,12 +44,12 @@ public class CreateTransactionRequestDTO{
 
     public Transaction toEntity(AccountBook accountBook){
         if (type == 1){
-            if (transactionCategory <=14){
+            if (transactionCategory <=4){
                 throw new TransactionHandler(ErrorStatus.TRANSACTION_TYPE_NOT_MATCH);
             }
         }
         else if(type == 0){
-            if(transactionCategory >14){
+            if(transactionCategory >4){
                 throw new TransactionHandler(ErrorStatus.TRANSACTION_TYPE_NOT_MATCH);
             }
         }
