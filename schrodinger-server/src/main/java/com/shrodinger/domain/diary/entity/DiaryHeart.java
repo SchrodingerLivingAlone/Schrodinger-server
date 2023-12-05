@@ -34,4 +34,8 @@ public class DiaryHeart extends BaseTimeEntity {
     @JoinColumn(name = "diary_id", nullable = false)
     private Diary diary;
 
+    public DiaryHeart(Member member, Diary diary) {
+        this.member = member;
+        this.diary = diary;
+    }
 }

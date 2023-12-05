@@ -53,7 +53,9 @@ public enum SuccessStatus implements BaseCode {
     GET_SCRAPS_SUCCESS(HttpStatus.OK, "SCRAP_200", "스크랩 조회 성공"),
 
     CREATE_DIARY_SUCCESS(HttpStatus.OK,"DIARY_201", "자취 일기 생성 성공"),
-    GET_DIARY_SUCCESS(HttpStatus.OK, "DIARY_200", "자취 일기 조회 성공");
+    GET_DIARY_SUCCESS(HttpStatus.OK, "DIARY_200", "자취 일기 조회 성공"),
+    CREATE_DIARY_HEART_SUCCESS(HttpStatus.CREATED, "DIARY_HEART_200", "좋아요 생성 성공"),
+    CANCEL_DIARY_HEART_SUCCESS(HttpStatus.OK, "DIARY_HEART_200", "좋아요 취소 성공");
     ;
 
 
