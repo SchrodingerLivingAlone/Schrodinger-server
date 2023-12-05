@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 
 import static com.shrodinger.common.util.ValidationUtils.getValidationErrors;
 
@@ -25,7 +26,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping
-    public ApiResponse createTransaction(@RequestBody @Validated CreateTransactionRequestDTO createTransactionRequestDTO, Errors errors){
+    public ApiResponse createTransaction(@RequestBody @Validated CreateTransactionRequestDTO createTransactionRequestDTO, Errors errors) {
         if (errors.hasErrors()) {
             return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
         }
@@ -33,10 +34,22 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ApiResponse getAllTransactions(@RequestBody @Validated TransactionRequestDTO transactionRequestDTO, Errors errors) {
+    public ApiResponse getAllTransactions(
+            @RequestParam @NotNull(message = "년도는 필수입니다") Integer year,
+            @RequestParam @NotNull(message = "월은 필수입니다") Integer month,
+            @RequestParam @NotNull(message = "일은 필수입니다") Integer day,
+            Errors errors) {
+
         if (errors.hasErrors()) {
             return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
         }
+        TransactionRequestDTO transactionRequestDTO = TransactionRequestDTO
+                .builder()
+                .year(year)
+                .month(month)
+                .day(day)
+                .build();
         return ApiResponse.of(SuccessStatus.GET_TRANSACTIONS_SUCCESS, transactionService.getTransactions(transactionRequestDTO));
     }
+
 }

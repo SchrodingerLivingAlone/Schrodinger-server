@@ -5,6 +5,7 @@ import com.shrodinger.domain.transaction.entity.PayCategory;
 import com.shrodinger.domain.transaction.entity.Transaction;
 import com.shrodinger.domain.transaction.entity.TransactionCategory;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TransactionRequestDTO{
 
     @NotNull(message = "년도는 필수입니다")

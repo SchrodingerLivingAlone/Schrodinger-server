@@ -1,10 +1,12 @@
 package com.shrodinger.domain.acoountbook.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@Builder
 public class AccountBookRequestDTO {
 
     @NotNull
