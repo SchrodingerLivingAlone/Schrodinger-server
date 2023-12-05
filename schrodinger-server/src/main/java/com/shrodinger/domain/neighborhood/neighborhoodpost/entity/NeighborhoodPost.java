@@ -28,7 +28,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "neighborhood_board_id")
+    @Column(name = "neighborhood_post_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
@@ -63,16 +63,16 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer commentCount;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL ,orphanRemoval = true)
     private List<NeighborhoodPostImage> neighborhoodPostImages;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL ,orphanRemoval = true)
     private List<NeighborhoodComment> neighborhoodComments;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NeighborhoodHeart> neighborhoodHearts;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Scrap> scraps;
     private String place;   // 사용자 장소 공유시 장소 이름(ex. "00키친")
 
