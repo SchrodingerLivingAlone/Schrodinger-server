@@ -46,7 +46,7 @@ public class NeighborhoodPostService {
         neighborhoodPostRepository.save(neighborhoodPost);
 
         List<NeighborhoodPostImage> neighborhoodPostImages = new ArrayList<>();
-        for (String imageUrl : awsS3Service.uploadImage(createNeighborhoodPostRequestDTO.getImages())) {
+        for (String imageUrl : awsS3Service.uploadImage(createNeighborhoodPostRequestDTO.getFiles())) {
             NeighborhoodPostImage neighborhoodPostImage = NeighborhoodPostImage.builder()
                     .neighborhoodPost(neighborhoodPost)
                     .imageUrl(imageUrl)

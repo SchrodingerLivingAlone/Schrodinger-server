@@ -53,7 +53,7 @@ public class UserService {
             throw new NeighborhoodHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST);
         }
         Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong());
-        if (signUp.getMultipartFiles() == null){
+        if (signUp.getFiles() == null){
             Member user = Member.builder()
                     .email(signUp.getEmail())
                     .password(passwordEncoder.encode(signUp.getPassword()))
@@ -65,7 +65,7 @@ public class UserService {
             memberRepository.save(user);
         }
         else {
-            String profileUrl = awsS3Service.uploadImage((List<MultipartFile>) signUp.getMultipartFiles()).get(0);
+            String profileUrl = awsS3Service.uploadImage((List<MultipartFile>) signUp.getFiles()).get(0);
             Member user = Member.builder()
                     .email(signUp.getEmail())
                     .password(passwordEncoder.encode(signUp.getPassword()))

@@ -19,6 +19,9 @@ public class DiaryResponseDTO {
     private String content;
 
     private List<String> imageUrls;
+    private String profileImage;
+    private String nickname;
+    private Long userId;
 
     private String createdAt;
     private String calculatedTime;
@@ -31,6 +34,9 @@ public class DiaryResponseDTO {
     public static DiaryResponseDTO from(Diary diary){
         return DiaryResponseDTO.builder()
                 .id(diary.getId())
+                .profileImage(diary.getMember().getProfileImage())
+                .nickname(diary.getMember().getNickname())
+                .userId(diary.getMember().getId())
                 .content(diary.getContent())
                 .imageUrls(diary.fromImages())
                 .createdAt(diary.getCreatedAt().toString())

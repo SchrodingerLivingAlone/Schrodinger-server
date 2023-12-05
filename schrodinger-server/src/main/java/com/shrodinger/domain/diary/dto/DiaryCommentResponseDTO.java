@@ -7,12 +7,16 @@ import lombok.Getter;
 @Getter
 @Builder
 public class DiaryCommentResponseDTO {
+    Long userId;
+    Long commentId;
     String nickname;
     String comment;
     String profile_image;
 
     public static DiaryCommentResponseDTO from(DiaryComment diaryComment) {
         return DiaryCommentResponseDTO.builder()
+                .userId(diaryComment.getMember().getId())
+                .commentId(diaryComment.getId())
                 .nickname(diaryComment.getMember().getNickname())
                 .comment(diaryComment.getContent())
                 .profile_image(diaryComment.getMember().getProfileImage())
