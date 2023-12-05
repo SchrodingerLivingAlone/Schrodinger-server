@@ -60,4 +60,7 @@ public class Diary extends BaseTimeEntity {
                 .map(DiaryImage::getImageUrl)
                 .collect(Collectors.toList());
     }
+    public void upCommentCount() {
+        this.commentCount += 1;
+    }
 }
