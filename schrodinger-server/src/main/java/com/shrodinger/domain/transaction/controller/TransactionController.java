@@ -27,7 +27,7 @@ public class TransactionController {
     @PostMapping
     public ApiResponse createTransaction(@RequestBody @Validated CreateTransactionRequestDTO createTransactionRequestDTO, Errors errors){
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getCode(), ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
         }
         return ApiResponse.of(SuccessStatus.CREATE_TRANSACTION_SUCCESS, transactionService.createTransaction(createTransactionRequestDTO));
     }
@@ -35,7 +35,7 @@ public class TransactionController {
     @GetMapping
     public ApiResponse getAllTransactions(@RequestBody @Validated TransactionRequestDTO transactionRequestDTO, Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getCode(), ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
         }
         return ApiResponse.of(SuccessStatus.GET_TRANSACTIONS_SUCCESS, transactionService.getTransactions(transactionRequestDTO));
     }

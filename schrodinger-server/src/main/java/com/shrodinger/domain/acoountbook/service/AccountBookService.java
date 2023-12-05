@@ -8,6 +8,7 @@ import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.domain.acoountbook.dto.*;
 import com.shrodinger.domain.acoountbook.entity.AccountBook;
 import com.shrodinger.domain.acoountbook.repository.AccountBookRepository;
+import com.shrodinger.domain.transaction.repository.TransactionRepository;
 import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Objects;
 
+import static com.shrodinger.common.util.TimeUtils.getLastDay;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class AccountBookService {
 
     private final AccountBookRepository accountBookRepository;
     private final MemberRepository memberRepository;
+    private final TransactionRepository transactionRepository;
 
     @Transactional
     public void createAccountBook(CreateAccountBookRequestDTO createAccountBookRequestDTO) {
@@ -78,6 +82,30 @@ public class AccountBookService {
                 .budget(accountBook.getBudget() + accountBook.getIncome() - accountBook.getExpenditure())
                 .expense(accountBookRepository.getExpense(accountBook.getYear(), accountBook.getMonth(), member.getId()))
                 .build();
+    }
+    public CalendarResponseDTO getAccountBookCalendar(CalendarRequestDTO calendarRequestDTO){
+        Member member = getMemberFromToken();
+        AccountBook accountBook = accountBookRepository.findByYearAndMonthAndMember(calendarRequestDTO.getYear(),
+                calendarRequestDTO.getMonth(),
+                member).orElseThrow(() -> new AccountBookHandler(ErrorStatus.ACCOUNT_BOOK_NOT_EXIST));
+        Integer lastDay = getLastDay(calendarRequestDTO.getYear(),calendarRequestDTO.getMonth());
+        boolean[] transactionStatusArray = new boolean[lastDay+1];
+        for (int i = 1; i <= lastDay; i++) {
+            boolean transactionExists = transactionRepository.existsByYearAndMonthAndDayAndAccountBook(
+                    calendarRequestDTO.getYear(), calendarRequestDTO.getMonth(), i, accountBook);
+            transactionStatusArray[i] = transactionExists;
+        }
+
+        return CalendarResponseDTO.builder()
+                .lastDay(lastDay)
+                .transactionArray(transactionStatusArray)
+                .build();
+    }
+    private Member getMemberFromToken() {
+        String userEmail = SecurityUtil.getCurrentUserEmail();
+        Member member = memberRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserHandler(ErrorStatus._UNAUTHORIZED));
+        return member;
     }
 
 }

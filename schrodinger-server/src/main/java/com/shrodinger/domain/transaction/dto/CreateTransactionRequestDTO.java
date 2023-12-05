@@ -36,31 +36,31 @@ public class CreateTransactionRequestDTO{
     private Long price;
 
     @NotNull(message = "카테고리는 필수입니다")
-    private TransactionCategory transactionCategory;
+    private Integer transactionCategory;
 
-    private PayCategory payCategory;
+    private Integer payCategory;
 
     private String categoryMemo;
 
     public Transaction toEntity(AccountBook accountBook){
         if (type == 1){
-            if (transactionCategory.getValue() <=14){
+            if (transactionCategory <=14){
                 throw new TransactionHandler(ErrorStatus.TRANSACTION_TYPE_NOT_MATCH);
             }
         }
         else if(type == 0){
-            if(transactionCategory.getValue() >14 ){
+            if(transactionCategory >14){
                 throw new TransactionHandler(ErrorStatus.TRANSACTION_TYPE_NOT_MATCH);
             }
         }
         return Transaction.builder()
                 .type(type) // 0이면 지출, 1이면 수입
-                .transactionCategory(transactionCategory)
+                .transactionCategory(TransactionCategory.valueOf(transactionCategory))
                 .year(year)
                 .month(month)
                 .day(day)
                 .price(price)
-                .payCategory(payCategory)
+                .payCategory(PayCategory.valueOf(payCategory))
                 .categoryMemo(categoryMemo)
                 .accountBook(accountBook)
                 .build();

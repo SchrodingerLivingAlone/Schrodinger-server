@@ -37,6 +37,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     TRANSACTION_TYPE_NOT_MATCH(HttpStatus.BAD_REQUEST, "TRANSACTION_4001", "잘못된 트랜잭션 타입 입력입니다. 수입과 지출을 잘 맞춰주세요!"),
     TRANSACTION_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "TRANSACTION_4002", "트랜잭션 관련 json 요청 유효성 검사 실패"),
+    TRANSACTION_INVALID_CATEGORY_ENUM(HttpStatus.BAD_REQUEST, "TRANSACTION 4003", "잘못된 카테고리 enum 숫자 입력입니다."),
 
     //게시글 관련 에러
     NEIGHBORHOOD_POST_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4002", "게시물 생성 관련 json 요청 유효성 검사 실패"),

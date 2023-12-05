@@ -1,6 +1,8 @@
 package com.shrodinger.domain.transaction.entity;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.shrodinger.common.exception.handler.TransactionHandler;
+import com.shrodinger.common.response.status.ErrorStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,5 +38,14 @@ public enum TransactionCategory {
     @JsonValue
     public String getCategory() {
         return this.category;
+    }
+
+    public static TransactionCategory valueOf(Integer value) {
+        for (TransactionCategory category : TransactionCategory.values()) {
+            if (category.getValue().equals(value)) {
+                return category;
+            }
+        }
+        throw new TransactionHandler(ErrorStatus.TRANSACTION_INVALID_CATEGORY_ENUM);
     }
 }
