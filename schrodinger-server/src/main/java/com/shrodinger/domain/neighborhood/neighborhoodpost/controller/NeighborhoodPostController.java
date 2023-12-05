@@ -37,7 +37,7 @@ public class NeighborhoodPostController {
     @PostMapping("")
     public ApiResponse createPost(@Validated @RequestPart CreateNeighborhoodPostRequestDTO createjson, @RequestPart("file") List<MultipartFile> multipartFile,Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR.getCode(), ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.ofFailure(ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR, getValidationErrors(errors));
         }
         return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.createNeighborhoodPost(createjson,multipartFile ));
     }
@@ -57,7 +57,7 @@ public class NeighborhoodPostController {
     public ApiResponse updatePost(@PathVariable("post_id") int post_id,
                                   @Validated @RequestBody UpdateNeighborhoodPostRequestDTO updateNeighborhoodPostRequestDTO, Errors errors) {
         if (errors.hasErrors()) {
-            return ApiResponse.onFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getCode(), ErrorStatus.TRANSACTION_ARGUMENT_ERROR.getMessage(), getValidationErrors(errors));
+            return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
         }
         return ApiResponse.of(SuccessStatus.UPDATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.updatePost(post_id, updateNeighborhoodPostRequestDTO));
     }

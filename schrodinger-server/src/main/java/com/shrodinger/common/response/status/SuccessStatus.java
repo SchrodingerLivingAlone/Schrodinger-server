@@ -26,6 +26,7 @@ public enum SuccessStatus implements BaseCode {
     CREATE_ACCOUNT_BOOK_SUCCESS(HttpStatus.CREATED, "ACCOUNT_BOOK_201", "가계부 생성 성공 "),
     GET_ACCOUNT_BOOK_SUCCESS(HttpStatus.OK, "ACCOUNT_BOOK_200", "가계부 정보 조회 성공"),
     GET_ACCOUNT_BOOK_WITH_EXPENSE_SUCCESS(HttpStatus.OK, "ACCOUNT_BOOK_EXPENSE_200", "가계부 지출 정보 조회 성공"),
+    GET_ACCOUNT_BOOK_CALENDAR_SUCCESS(HttpStatus.OK,"ACCOUNT_BOOK_CALENDAR_200","가계부 달력 조회 성공"),
 
 
     CREATE_TRANSACTION_SUCCESS(HttpStatus.CREATED, "TRANSACTION_201", "거래 내역 생성 성공"),
@@ -46,6 +47,7 @@ public enum SuccessStatus implements BaseCode {
 
     CREATE_NEIGHBORHOOD_POST_HEART_SUCCESS(HttpStatus.CREATED, "NEIGHBORHOOD_HEARD_201", "좋아요 생성 성공"),
     CANCEL_NEIGHBORHOOD_POST_HEART_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_HEARD_200", "좋아요 취소 성공"),
+
 
     CREATE_SCRAP_SUCCESS(HttpStatus.CREATED, "SCRAP_201", "스크랩 생성 성공"),
     GET_SCRAPS_SUCCESS(HttpStatus.OK, "SCRAP_200", "스크랩 조회 성공");

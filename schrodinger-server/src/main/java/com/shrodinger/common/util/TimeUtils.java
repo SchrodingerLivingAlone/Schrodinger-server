@@ -2,6 +2,7 @@ package com.shrodinger.common.util;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 public class TimeUtils {
     public static String TimeFormat(LocalDateTime pastDateTime) {
@@ -22,5 +23,11 @@ public class TimeUtils {
         } else {
             return "방금전";
         }
+    }
+    public static Integer getLastDay(Integer year, Integer month){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1); // 월은 0부터 시작하므로 입력된 월에서 1을 빼줍니다.
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
 }
