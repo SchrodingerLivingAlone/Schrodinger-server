@@ -41,7 +41,7 @@ public class AccountBookController {
     @GetMapping("/budget")
     public ApiResponse getBudget(
             @RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
-            @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year,
+            @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year
             ) {
         AccountBookRequestDTO accountBookRequestDTO = AccountBookRequestDTO.builder().year(year).month(month).build();
         return ApiResponse.of(SuccessStatus.GET_ACCOUNT_BOOK_SUCCESS, accountBookService.getBudget(accountBookRequestDTO));

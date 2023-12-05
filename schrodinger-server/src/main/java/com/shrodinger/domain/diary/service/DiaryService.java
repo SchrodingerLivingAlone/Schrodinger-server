@@ -35,7 +35,7 @@ public class DiaryService {
         diaryRepository.save(diary);
 
         List<DiaryImage> diaryImages = new ArrayList<>();
-        for (String imageUrl : awsS3Service.uploadImage(createDiaryRequestDTO.getMultipartFile())) {
+        for (String imageUrl : awsS3Service.uploadImage(createDiaryRequestDTO.getImages())) {
             DiaryImage diaryImage = DiaryImage.builder()
                     .diary(diary)
                     .imageUrl(imageUrl)
