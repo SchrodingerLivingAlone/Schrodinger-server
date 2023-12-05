@@ -40,13 +40,13 @@ public class NeighborhoodPostService {
         return UserNeighborhoodResponseDTO.builder().town(getMemberFromToken().getNeighborhood().getDong()).build();
     }
     @Transactional
-    public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO ,List<MultipartFile> multipartFile) {
+    public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
         Member member = getMemberFromToken();
         NeighborhoodPost neighborhoodPost = createNeighborhoodPostRequestDTO.toEntity(member);
         neighborhoodPostRepository.save(neighborhoodPost);
 
         List<NeighborhoodPostImage> neighborhoodPostImages = new ArrayList<>();
-        for (String imageUrl : awsS3Service.uploadImage(multipartFile)) {
+        for (String imageUrl : awsS3Service.uploadImage(createNeighborhoodPostRequestDTO.getImages())) {
             NeighborhoodPostImage neighborhoodPostImage = NeighborhoodPostImage.builder()
                     .neighborhoodPost(neighborhoodPost)
                     .imageUrl(imageUrl)

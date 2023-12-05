@@ -36,6 +36,6 @@ public class UserSignUpRequestDto {
     @NotBlank(message = "동(ex.상도동)은 필수 입력 값입니다.")
     private String dong;
 
-    List<MultipartFile> multipartFiles;
+    List<MultipartFile> files;
 
 }

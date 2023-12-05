@@ -7,6 +7,7 @@ import com.shrodinger.domain.user.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CreateNeighborhoodPostRequestDTO {
 
     @NotNull(message = "카테고리는 필수입니다.")
-    private NeighborhoodPostCategory category;
+    private Integer category;
 
     @NotNull(message = "제목은 필수입니다.")
     private String title;
@@ -28,12 +29,14 @@ public class CreateNeighborhoodPostRequestDTO {
     @NotNull(message = "장소는 필수입니다.")
     private String place;
 
+    List<MultipartFile> files;
+
 
     public NeighborhoodPost toEntity(Member member) {
         return NeighborhoodPost.builder()
                 .member(member)
                 .neighborhood(member.getNeighborhood())
-                .neighborhoodPostCategory(category)
+                .neighborhoodPostCategory(NeighborhoodPostCategory.valueOf(category))
                 .title(title)
                 .content(content)
                 .place(place)

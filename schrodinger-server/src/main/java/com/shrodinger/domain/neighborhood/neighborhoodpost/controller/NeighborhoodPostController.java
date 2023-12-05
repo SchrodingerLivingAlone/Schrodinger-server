@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.shrodinger.common.util.ValidationUtils.getValidationErrors;
@@ -35,11 +36,11 @@ public class NeighborhoodPostController {
     }
 
     @PostMapping("")
-    public ApiResponse createPost(@Validated @RequestPart CreateNeighborhoodPostRequestDTO createjson, @RequestPart("file") List<MultipartFile> multipartFile,Errors errors) {
+    public ApiResponse createPost(@Valid @ModelAttribute CreateNeighborhoodPostRequestDTO createjson, Errors errors) {
         if (errors.hasErrors()) {
             return ApiResponse.ofFailure(ErrorStatus.NEIGHBORHOOD_POST_ARGUMENT_ERROR, getValidationErrors(errors));
         }
-        return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.createNeighborhoodPost(createjson,multipartFile ));
+        return ApiResponse.of(SuccessStatus.CREATE_NEIGHBORHOOD_POST_SUCCESS, neighborhoodPostService.createNeighborhoodPost(createjson));
     }
 
     @GetMapping("")
