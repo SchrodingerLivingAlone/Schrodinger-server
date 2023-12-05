@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import static com.shrodinger.common.util.ValidationUtils.getValidationErrors;
@@ -39,12 +40,9 @@ public class AccountBookController {
 
     @GetMapping("/budget")
     public ApiResponse getBudget(
-            @Validated @RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
-            @Validated @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year,
-            Errors errors) {
-        if (errors.hasErrors()) {
-            return ApiResponse.ofFailure(ErrorStatus.ACCOUNT_BOOK_ARGUMENT_ERROR, getValidationErrors(errors));
-        }
+            @RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
+            @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year,
+            ) {
         AccountBookRequestDTO accountBookRequestDTO = AccountBookRequestDTO.builder().year(year).month(month).build();
         return ApiResponse.of(SuccessStatus.GET_ACCOUNT_BOOK_SUCCESS, accountBookService.getBudget(accountBookRequestDTO));
     }
@@ -59,22 +57,15 @@ public class AccountBookController {
 
 
     @GetMapping("/all")
-    public ApiResponse getAccountBookWithExpense(@Validated @RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
-                                                 @Validated @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year
-            , Errors errors) {
-        if (errors.hasErrors()) {
-            return ApiResponse.ofFailure(ErrorStatus.ACCOUNT_BOOK_ARGUMENT_ERROR, getValidationErrors(errors));
-        }
+    public ApiResponse getAccountBookWithExpense(@RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
+                                                 @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year) {
         AccountBookRequestDTO accountBookRequestDTO = AccountBookRequestDTO.builder().year(year).month(month).build();
         return ApiResponse.of(SuccessStatus.GET_ACCOUNT_BOOK_WITH_EXPENSE_SUCCESS, accountBookService.getAccountBookResponse(accountBookRequestDTO));
     }
 
     @GetMapping("/calendar")
-    public ApiResponse getCalendar(@Validated @RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
-                                   @Validated @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year, Errors errors) {
-        if (errors.hasErrors()) {
-            return ApiResponse.ofFailure(ErrorStatus.ACCOUNT_BOOK_ARGUMENT_ERROR, getValidationErrors(errors));
-        }
+    public ApiResponse getCalendar(@RequestParam @NotNull @Range(min = 1, max = 12, message = "1월부터 12월까지만 입력해주세요") Integer month,
+                                  @RequestParam @NotNull @Range(min = 2000, max = 2500) Integer year) {
         CalendarRequestDTO calendarRequestDTO = CalendarRequestDTO.builder().year(year).month(month).build();
         return ApiResponse.of(SuccessStatus.GET_ACCOUNT_BOOK_CALENDAR_SUCCESS, accountBookService.getAccountBookCalendar(calendarRequestDTO));
     }
