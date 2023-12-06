@@ -5,6 +5,7 @@ import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPo
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,9 +14,13 @@ import static com.shrodinger.common.util.TimeUtils.TimeFormat;
 
 
 @Getter
+@Setter
 @Builder
 public class NeighborhoodPostDetailResponseDTO {
     private Long id;
+    private String profileImage;
+    private String nickname;
+    private String place;
 
     private String dong;
 
@@ -29,7 +34,8 @@ public class NeighborhoodPostDetailResponseDTO {
 
     private String createdAt;
     private String calculatedTime;
-
+    private boolean isScrapped;
+    private boolean isLiked;
 
     private int view;
 
@@ -41,6 +47,9 @@ public class NeighborhoodPostDetailResponseDTO {
     public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
+                .nickname(neighborhoodPost.getMember().getNickname())
+                .profileImage(neighborhoodPost.getMember().getProfileImage())
+                .place(neighborhoodPost.getPlace())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())

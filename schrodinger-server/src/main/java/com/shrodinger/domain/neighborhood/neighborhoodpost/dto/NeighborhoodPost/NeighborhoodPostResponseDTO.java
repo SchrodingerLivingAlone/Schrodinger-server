@@ -14,6 +14,9 @@ import static com.shrodinger.common.util.TimeUtils.TimeFormat;
 @Builder
 public class NeighborhoodPostResponseDTO {
     private Long id;
+    private String profileImage;
+    private String nickname;
+    private String place;
 
     private String dong;
 
@@ -29,6 +32,7 @@ public class NeighborhoodPostResponseDTO {
 
     private String calculatedTime;
 
+
     private int view;
     private int likeCount;
     private int commentCount;
@@ -37,6 +41,9 @@ public class NeighborhoodPostResponseDTO {
     public static NeighborhoodPostResponseDTO from(NeighborhoodPost neighborhoodPost) {
         return NeighborhoodPostResponseDTO.builder()
                 .id(neighborhoodPost.getId())
+                .nickname(neighborhoodPost.getMember().getNickname())
+                .profileImage(neighborhoodPost.getMember().getProfileImage())
+                .place(neighborhoodPost.getPlace())
                 .dong(neighborhoodPost.getNeighborhood().getDong())
                 .neighborhoodPostCategory(neighborhoodPost.getNeighborhoodPostCategory())
                 .title(neighborhoodPost.getTitle())

@@ -7,10 +7,12 @@ import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.s3.AwsS3Service;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.*;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodHeart;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostImage;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.repository.*;
+import com.shrodinger.domain.scrap.repository.ScrapRepository;
 import com.shrodinger.domain.user.dto.UserNeighborhoodResponseDTO;
 import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
@@ -34,6 +36,7 @@ public class NeighborhoodPostService {
     private final NeighborhoodHeartRepository neighborhoodHeartRepository;
     private final MemberRepository memberRepository;
     private final AwsS3Service awsS3Service;
+    private final ScrapRepository scrapRepository;
     private final NeighborhoodRepository neighborhoodRepository;
 
     public UserNeighborhoodResponseDTO getUserLocation() {
@@ -93,12 +96,16 @@ public class NeighborhoodPostService {
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
         neighborhoodPostRepository.delete(post);
     }
-    public NeighborhoodPostDetailResponseDTO getPost (long post_id){
+    public NeighborhoodPostDetailResponseDTO getPost(long post_id){
         NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
         post.updateView();
+        Member member = getMemberFromToken();
         neighborhoodPostRepository.save(post);
-        return NeighborhoodPostDetailResponseDTO.from(post);
+        NeighborhoodPostDetailResponseDTO neighborhoodPostDetailResponseDTO = NeighborhoodPostDetailResponseDTO.from(post);
+        neighborhoodPostDetailResponseDTO.setLiked(neighborhoodHeartRepository.existsByMemberAndNeighborhoodPost(member,post));
+        neighborhoodPostDetailResponseDTO.setScrapped(scrapRepository.existsByMemberAndNeighborhoodPost(member,post));
+        return neighborhoodPostDetailResponseDTO;
     }
 
     public List<NeighborhoodPostResponseDTO> getPostsByKeyword (String keyword){
