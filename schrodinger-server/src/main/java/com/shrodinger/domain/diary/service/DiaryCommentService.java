@@ -65,6 +65,7 @@ public class DiaryCommentService {
     /*
     댓글 달린 자취 일기 넘겨주기
      */
+    /*
     public List<DiaryResponseDTO> getAllCommentedDiary(){
         Member member = getMemberFromToken();
         List<DiaryComment> diaryComments = diaryCommentRepository.findAllByMember(member);
@@ -73,6 +74,8 @@ public class DiaryCommentService {
                 .map(DiaryResponseDTO::from)
                 .collect(Collectors.toList());
     }
+    
+     */
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)

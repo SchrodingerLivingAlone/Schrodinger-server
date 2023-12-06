@@ -9,6 +9,7 @@ import com.shrodinger.domain.diary.dto.CreateDiaryResponseDTO;
 import com.shrodinger.domain.diary.dto.DiaryResponseDTO;
 import com.shrodinger.domain.diary.entity.Diary;
 import com.shrodinger.domain.diary.entity.DiaryImage;
+import com.shrodinger.domain.diary.repository.DiaryHeartRepository;
 import com.shrodinger.domain.diary.repository.DiaryImageRepository;
 import com.shrodinger.domain.diary.repository.DiaryRepository;
 import com.shrodinger.domain.user.entity.Member;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class DiaryService {
     private final MemberRepository memberRepository;
     private final DiaryRepository diaryRepository;
+    private final DiaryHeartRepository diaryHeartRepository;
     private final DiaryImageRepository diaryImageRepository;
     private final AwsS3Service awsS3Service;
     @Transactional
@@ -50,16 +52,19 @@ public class DiaryService {
         return CreateDiaryResponseDTO.from(diary);
     }
 
-
-    public List<DiaryResponseDTO> getAllDiary (){
+    public List<DiaryResponseDTO> getAllDiary() {
         List<DiaryResponseDTO> diaryResponseDTOS = diaryRepository.findAllByOrderByCreatedAtDesc()
                 .stream()
-                .map(DiaryResponseDTO::from)
+                .map(diary -> DiaryResponseDTO.from(diary, getMemberFromToken(), this))
                 .collect(Collectors.toList());
 
         return diaryResponseDTOS;
     }
 
+
+    public boolean isDiaryLikedByMember(Diary diary, Member member) {
+        return diaryHeartRepository.existsByMemberAndDiary(member, diary);
+    }
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)

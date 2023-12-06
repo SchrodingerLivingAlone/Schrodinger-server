@@ -2,7 +2,9 @@ package com.shrodinger.domain.diary.dto;
 
 import com.shrodinger.domain.diary.entity.Diary;
 import com.shrodinger.domain.diary.entity.DiaryComment;
+import com.shrodinger.domain.diary.service.DiaryService;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CommentResponseDTO;
+import com.shrodinger.domain.user.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -30,8 +32,11 @@ public class DiaryResponseDTO {
     private int commentCount;
 
     private List<DiaryCommentResponseDTO> comments;
+    private boolean isLiked;
 
-    public static DiaryResponseDTO from(Diary diary){
+    public static DiaryResponseDTO from(Diary diary, Member currentMember,DiaryService diaryService) {
+        boolean isLiked = diaryService.isDiaryLikedByMember(diary, currentMember);
+
         return DiaryResponseDTO.builder()
                 .id(diary.getId())
                 .profileImage(diary.getMember().getProfileImage())
@@ -44,6 +49,7 @@ public class DiaryResponseDTO {
                 .likeCount(diary.getLikeCount())
                 .commentCount(diary.getCommentCount())
                 .comments(diary.getDiaryComments().stream().map(DiaryCommentResponseDTO::from).collect(Collectors.toList()))
+                .isLiked(isLiked)
                 .build();
     }
 }
