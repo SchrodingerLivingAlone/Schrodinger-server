@@ -37,12 +37,8 @@ public class TransactionController {
     public ApiResponse getAllTransactions(
             @RequestParam @NotNull(message = "년도는 필수입니다") Integer year,
             @RequestParam @NotNull(message = "월은 필수입니다") Integer month,
-            @RequestParam @NotNull(message = "일은 필수입니다") Integer day,
-            Errors errors) {
+            @RequestParam @NotNull(message = "일은 필수입니다") Integer day) {
 
-        if (errors.hasErrors()) {
-            return ApiResponse.ofFailure(ErrorStatus.TRANSACTION_ARGUMENT_ERROR, getValidationErrors(errors));
-        }
         TransactionRequestDTO transactionRequestDTO = TransactionRequestDTO
                 .builder()
                 .year(year)

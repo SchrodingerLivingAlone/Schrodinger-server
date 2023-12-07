@@ -37,6 +37,7 @@ public class NeighborhoodPostDetailResponseDTO {
     private String calculatedTime;
     private boolean isScrapped;
     private boolean isLiked;
+    private boolean isOwner;
 
     private int view;
 
@@ -46,6 +47,7 @@ public class NeighborhoodPostDetailResponseDTO {
     private List<CommentResponseDTO> comments;
 
     public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost, Member member) {
+        boolean isOwner = neighborhoodPost.getMember().equals(member);
         return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .nickname(neighborhoodPost.getMember().getNickname())
@@ -62,6 +64,7 @@ public class NeighborhoodPostDetailResponseDTO {
                 .likeCount(neighborhoodPost.getLikeCount())
                 .commentCount(neighborhoodPost.getCommentCount())
                 .comments(neighborhoodPost.getNeighborhoodComments().stream().map(comment -> CommentResponseDTO.from(comment, member)).collect(Collectors.toList()))
+                .isOwner(isOwner)
                 .build();
     }
 
