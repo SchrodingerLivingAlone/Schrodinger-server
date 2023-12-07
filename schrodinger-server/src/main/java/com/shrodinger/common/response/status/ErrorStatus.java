@@ -16,6 +16,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
     _UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "COMMON405", "지원하지 않는 미디어 파일입니다."),
+    IMAGE_IS_NULL(HttpStatus.BAD_REQUEST, "COMMON406", "이미지 파일은 null이면 안됩니다."),
 
     // 멤버 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
@@ -44,6 +45,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NEIGHBORHOOD_POST_NOT_EXIST(HttpStatus.NOT_FOUND, "NEIGHBORHOOD_POST_4041", "해당 게시글이 존재하지 않습니다."),
     NEIGHBORHOOD_POST_OWNER_ERROR(HttpStatus.BAD_REQUEST, "NEIGHBORHOOD_POST_4001", "해당 유저가 글의 주인이 아닙니다."),
 
+    NEIGHBORHOOD_COMMENT_NOT_EXIST(HttpStatus.NOT_FOUND, "NEIGHBORHOOD_COMMENT_404", "해당 댓글이 존재하지 않습니다."),
     SCRAP_ERROR(HttpStatus.BAD_REQUEST, "SCRAP_POST_ARGUMENT_ERROR","스크랩 대상 게시글이 존재하지 않습니다."),
 
     DIARY_NOT_EXIST(HttpStatus.BAD_REQUEST, "DIARY_4041", "다이어리가 존재하지 않습니다.")

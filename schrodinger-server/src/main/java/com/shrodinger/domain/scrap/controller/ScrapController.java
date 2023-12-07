@@ -19,7 +19,11 @@ public class ScrapController {
     private final ScrapService scrapService;
     @PostMapping("{postId}")
     public ApiResponse createScrap(@PathVariable Long postId){
-        return ApiResponse.of(SuccessStatus.CREATE_SCRAP_SUCCESS,scrapService.createScrap(postId));
+        if (scrapService.createScrap(postId)) {
+            return ApiResponse.of(SuccessStatus.CANCEL_SCRAP_SUCCESS, "스크랩 생성 성공");
+        } else {
+            return ApiResponse.of(SuccessStatus.CANCEL_SCRAP_SUCCESS, "스크랩 취소 성공");
+        }
     }
 
     @GetMapping("")

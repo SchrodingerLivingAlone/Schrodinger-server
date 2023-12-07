@@ -25,16 +25,22 @@ public class ScrapService {
     private final NeighborhoodPostRepository neighborhoodPostRepository;
     private final MemberRepository memberRepository;
     private final ScrapRepository scrapRepository;
-    public NeighborhoodPostResponseDTO createScrap(Long postId) {
+    public boolean createScrap(Long postId) {
         Member member = getMemberFromToken();
         NeighborhoodPost neighborhoodPost = neighborhoodPostRepository.findById(postId).orElseThrow(
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
-        Scrap scrap = Scrap.builder()
-                .neighborhoodPost(neighborhoodPost)
-                .member(member)
-                .build();
-        scrapRepository.save(scrap);
-        return NeighborhoodPostResponseDTO.from(neighborhoodPost);
+        if (!scrapRepository.existsByMemberAndNeighborhoodPost(member,neighborhoodPost)){
+            Scrap scrap = Scrap.builder()
+                    .neighborhoodPost(neighborhoodPost)
+                    .member(member)
+                    .build();
+            scrapRepository.save(scrap);
+            return true;
+        }
+        else {
+            scrapRepository.deleteByMemberAndNeighborhoodPost(member, neighborhoodPost);
+            return false;
+        }
     }
 
     public List<NeighborhoodPostResponseDTO> getAllScraps(){
