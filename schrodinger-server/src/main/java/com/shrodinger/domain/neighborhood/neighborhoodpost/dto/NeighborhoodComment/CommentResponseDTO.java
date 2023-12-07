@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class CommentResponseDTO {
+    Long id;
     String nickname;
     String comment;
     String profile_image;
@@ -16,6 +17,7 @@ public class CommentResponseDTO {
     public static CommentResponseDTO from(NeighborhoodComment comment, Member currentUser) {
         boolean isOwner = comment.getMember().equals(currentUser);
         return CommentResponseDTO.builder()
+                .id(comment.getId())
                 .nickname(comment.getMember().getNickname())
                 .comment(comment.getContent())
                 .profile_image(comment.getMember().getProfileImage())

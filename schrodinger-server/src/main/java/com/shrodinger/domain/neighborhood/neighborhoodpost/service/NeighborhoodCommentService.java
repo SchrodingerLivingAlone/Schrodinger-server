@@ -6,6 +6,7 @@ import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.ApiResponse;
 import com.shrodinger.common.response.status.ErrorStatus;
 import com.shrodinger.common.response.status.SuccessStatus;
+import com.shrodinger.domain.neighborhood.neighborhoodpost.controller.NeighborhoodCommentController;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CommentResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CreateCommentRequestDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost.NeighborhoodPostResponseDTO;
@@ -70,6 +71,13 @@ public class NeighborhoodCommentService {
                 .map(NeighborhoodPostResponseDTO::from)
                 .collect(Collectors.toList());
     }
+
+    public String deleteComment(Long commentId){
+        NeighborhoodComment neighborhoodComment =neighborhoodCommentRepository.findById(commentId).orElseThrow(() -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_COMMENT_NOT_EXIST));
+        neighborhoodCommentRepository.delete(neighborhoodComment);
+        return "댓글 삭제 성공";
+    }
+
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)

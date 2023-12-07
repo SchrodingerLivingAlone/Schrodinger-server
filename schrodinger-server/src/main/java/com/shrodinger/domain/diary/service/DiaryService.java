@@ -1,5 +1,6 @@
 package com.shrodinger.domain.diary.service;
 
+import com.shrodinger.common.exception.handler.DiaryHandler;
 import com.shrodinger.common.exception.handler.UserHandler;
 import com.shrodinger.common.jwt.SecurityUtil;
 import com.shrodinger.common.response.status.ErrorStatus;
@@ -35,7 +36,9 @@ public class DiaryService {
         Member member = getMemberFromToken();
         Diary diary = createDiaryRequestDTO.toEntity(member);
         diaryRepository.save(diary);
-
+        if (createDiaryRequestDTO.getFiles()==null){
+            throw new DiaryHandler(ErrorStatus.IMAGE_IS_NULL);
+        }
         List<DiaryImage> diaryImages = new ArrayList<>();
         for (String imageUrl : awsS3Service.uploadImage(createDiaryRequestDTO.getFiles())) {
             DiaryImage diaryImage = DiaryImage.builder()

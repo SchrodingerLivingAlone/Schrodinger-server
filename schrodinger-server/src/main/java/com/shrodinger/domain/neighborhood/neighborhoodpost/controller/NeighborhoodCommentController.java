@@ -6,6 +6,7 @@ import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComme
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CreateCommentRequestDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodComment;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.service.NeighborhoodCommentService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,9 @@ public class NeighborhoodCommentController {
     @GetMapping("/posts")
     public ApiResponse getCommentedPosts(){
         return ApiResponse.of(SuccessStatus.GET_NEIGHBORHOOD_POST_BY_COMMENT, neighborhoodCommentService.getCommentedPosts());
+    }
+    @DeleteMapping("/{commentId}")
+    public ApiResponse deleteComment(@PathVariable Long commentId){
+        return ApiResponse.of(SuccessStatus.DELETE_NEIGHBORHOOD_COMMENTS_SUCCESS, neighborhoodCommentService.deleteComment(commentId));
     }
 }
