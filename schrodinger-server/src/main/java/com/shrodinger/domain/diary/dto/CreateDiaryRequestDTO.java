@@ -19,7 +19,7 @@ public class CreateDiaryRequestDTO {
     @NotNull(message = "내용은 필수입니다.")
     private String content;
 
-    List<MultipartFile> images;
+    List<MultipartFile> files;
 
     public Diary toEntity(Member member) {
         return Diary.builder()
