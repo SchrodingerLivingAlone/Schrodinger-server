@@ -35,9 +35,12 @@ public class NeighborhoodCommentService {
 
     @Transactional(readOnly = true)
     public List<CommentResponseDTO> getAllCommentsByPostId(Long postId) {
+        Member currentUser = getMemberFromToken();
         List<CommentResponseDTO> commentResponseDTOS = neighborhoodCommentRepository.findAllByNeighborhoodPostId(postId)
-                .stream().map(CommentResponseDTO::from).collect(
-                        Collectors.toList());
+                .stream()
+                .map(comment -> CommentResponseDTO.from(comment, currentUser))
+                .collect(Collectors.toList());
+
         return commentResponseDTOS;
     }
 
@@ -55,7 +58,7 @@ public class NeighborhoodCommentService {
         post.upCommentCount();
         neighborhoodPostRepository.save(post);
         neighborhoodCommentRepository.save(comment);
-        CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment);
+        CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment,member);
         return commentResponseDTO;
     }
 

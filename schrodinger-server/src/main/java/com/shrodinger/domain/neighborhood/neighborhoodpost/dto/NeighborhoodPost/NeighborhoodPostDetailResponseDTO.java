@@ -3,6 +3,7 @@ package com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodPost
 import com.shrodinger.domain.neighborhood.neighborhoodpost.dto.NeighborhoodComment.CommentResponseDTO;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPost;
 import com.shrodinger.domain.neighborhood.neighborhoodpost.entity.NeighborhoodPostCategory;
+import com.shrodinger.domain.user.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class NeighborhoodPostDetailResponseDTO {
 
     private List<CommentResponseDTO> comments;
 
-    public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost) {
+    public static NeighborhoodPostDetailResponseDTO from(NeighborhoodPost neighborhoodPost, Member member) {
         return NeighborhoodPostDetailResponseDTO.builder()
                 .id(neighborhoodPost.getId())
                 .nickname(neighborhoodPost.getMember().getNickname())
@@ -60,7 +61,7 @@ public class NeighborhoodPostDetailResponseDTO {
                 .view(neighborhoodPost.getView())
                 .likeCount(neighborhoodPost.getLikeCount())
                 .commentCount(neighborhoodPost.getCommentCount())
-                .comments(neighborhoodPost.getNeighborhoodComments().stream().map(CommentResponseDTO::from).collect(Collectors.toList()))
+                .comments(neighborhoodPost.getNeighborhoodComments().stream().map(comment -> CommentResponseDTO.from(comment, member)).collect(Collectors.toList()))
                 .build();
     }
 

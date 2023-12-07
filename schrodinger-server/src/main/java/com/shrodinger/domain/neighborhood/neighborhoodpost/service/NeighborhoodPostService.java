@@ -102,7 +102,7 @@ public class NeighborhoodPostService {
         post.updateView();
         Member member = getMemberFromToken();
         neighborhoodPostRepository.save(post);
-        NeighborhoodPostDetailResponseDTO neighborhoodPostDetailResponseDTO = NeighborhoodPostDetailResponseDTO.from(post);
+        NeighborhoodPostDetailResponseDTO neighborhoodPostDetailResponseDTO = NeighborhoodPostDetailResponseDTO.from(post,member);
         neighborhoodPostDetailResponseDTO.setLiked(neighborhoodHeartRepository.existsByMemberAndNeighborhoodPost(member,post));
         neighborhoodPostDetailResponseDTO.setScrapped(scrapRepository.existsByMemberAndNeighborhoodPost(member,post));
         return neighborhoodPostDetailResponseDTO;
