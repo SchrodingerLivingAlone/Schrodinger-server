@@ -78,7 +78,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
 
 
     public void updateBoard(UpdateNeighborhoodPostRequestDTO updateNeighborhoodPostRequestDTO) {
-        this.neighborhoodPostCategory = updateNeighborhoodPostRequestDTO.getCategory();
+        this.neighborhoodPostCategory = NeighborhoodPostCategory.valueOf(updateNeighborhoodPostRequestDTO.getCategory());
         this.title = updateNeighborhoodPostRequestDTO.getTitle();
         this.content = updateNeighborhoodPostRequestDTO.getContent();
         this.place = updateNeighborhoodPostRequestDTO.getPlace();

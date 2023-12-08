@@ -72,7 +72,17 @@ public class NeighborhoodPostService {
              return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(member.getNeighborhood(),category).stream()
                      .map(NeighborhoodPostResponseDTO::from)
                      .collect(Collectors.toList());
-        } else {
+        } else if (sort == 1){
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByView(member.getNeighborhood(),category).stream()
+                    .map(NeighborhoodPostResponseDTO::from)
+                    .collect(Collectors.toList());
+        }
+        else if(sort ==2){
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByLikeCount(member.getNeighborhood(),category).stream()
+                    .map(NeighborhoodPostResponseDTO::from)
+                    .collect(Collectors.toList());
+        }
+        else {
             return neighborhoodPostRepository.findAllByNeighborhoodOrderByView(member.getNeighborhood()).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
@@ -123,6 +133,14 @@ public class NeighborhoodPostService {
                 .stream()
                 .collect(Collectors.toList());
         return combinedList;
+    }
+
+    public List<NeighborhoodPostResponseDTO> getWrittenPosts(){
+        Member member = getMemberFromToken();
+        List<NeighborhoodPost> neighborhoodPosts = neighborhoodPostRepository.findAllByMember(member);
+        return neighborhoodPosts.stream()
+                .map(NeighborhoodPostResponseDTO::from)
+                .collect(Collectors.toList());
     }
 
 
