@@ -15,11 +15,11 @@ import java.util.Optional;
 @Repository
 public interface NeighborhoodPostRepository extends JpaRepository<NeighborhoodPost, Long> {
     List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(Neighborhood neighborhood, NeighborhoodPostCategory category);
-    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByView(Neighborhood neighborhood,NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescView(Neighborhood neighborhood, NeighborhoodPostCategory category);
 
-    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByLikeCount(Neighborhood neighborhood , NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescLikeCount(Neighborhood neighborhood, NeighborhoodPostCategory category);
 
-    List<NeighborhoodPost> findAllByNeighborhoodOrderByView(Neighborhood neighborhood);
+    List<NeighborhoodPost> findAllByNeighborhoodOrderByCreatedAtDescView(Neighborhood neighborhood);
     Optional<NeighborhoodPost> findById(Long id);
     List<NeighborhoodPost> findAllByTitleContaining(String keyword);
 

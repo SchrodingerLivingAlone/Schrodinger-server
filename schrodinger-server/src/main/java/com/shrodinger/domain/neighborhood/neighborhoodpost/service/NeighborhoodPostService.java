@@ -73,17 +73,17 @@ public class NeighborhoodPostService {
                      .map(NeighborhoodPostResponseDTO::from)
                      .collect(Collectors.toList());
         } else if (sort == 1){
-            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByView(member.getNeighborhood(),category).stream()
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescView(member.getNeighborhood(),category).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
         }
         else if(sort ==2){
-            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByLikeCount(member.getNeighborhood(),category).stream()
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescLikeCount(member.getNeighborhood(),category).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
         }
         else {
-            return neighborhoodPostRepository.findAllByNeighborhoodOrderByView(member.getNeighborhood()).stream()
+            return neighborhoodPostRepository.findAllByNeighborhoodOrderByCreatedAtDescView(member.getNeighborhood()).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
         }
