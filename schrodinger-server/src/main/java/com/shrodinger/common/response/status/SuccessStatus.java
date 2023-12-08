@@ -20,6 +20,7 @@ public enum SuccessStatus implements BaseCode {
     IMAG_UPLOAD_SUCCESS(HttpStatus.OK, "IMAGE200", "이미지 업로드 성공입니다."),
     // 멤버 관련 응답
     GET_PROFILE_SUCCESS(HttpStatus.OK,"USER200","프로필 가져오기 성공"),
+    LOCATION_UPDATE_SUCCESS(HttpStatus.OK, "LOCATION200", "동네 인증 성공"),
     // ~~~ 관련 응답
 
     //가계부 관련 응답
@@ -37,6 +38,7 @@ public enum SuccessStatus implements BaseCode {
     GET_NEIGHBORHOOD_POST(HttpStatus.OK, "NEIGHBORHOOD_200", "게시글 상세 조회 성공"),
     GET_NEIGHBORHOOD_POST_BY_LIKE(HttpStatus.OK, "NEIGHBORHOOD_LIKE_POSTS_200", "좋아요 누른 게시글 조회 성공"),
     GET_NEIGHBORHOOD_POST_BY_COMMENT(HttpStatus.OK, "NEIGHBORHOOD_COMMENT_POSTS_200", "댓글 단 게시글 조회 성공"),
+    GET_NEIGHBORHOOD_MY_WRITTEN_POSTS(HttpStatus.OK, "NEIGHBORHOOD_MY_WRITTEN_POSTS_200", "작성한 글 조회 성공"),
 
     UPDATE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_200", "게시물 수정 성공"),
     DELETE_NEIGHBORHOOD_POST_SUCCESS(HttpStatus.OK, "NEIGHBORHOOD_200", "게시글 삭제 성공"),

@@ -11,10 +11,7 @@ import com.shrodinger.common.response.status.SuccessStatus;
 import com.shrodinger.common.s3.AwsS3Service;
 import com.shrodinger.domain.neighborhood.neighborhood.entity.Neighborhood;
 import com.shrodinger.domain.neighborhood.neighborhood.repository.NeighborhoodRepository;
-import com.shrodinger.domain.user.dto.UserLoginRequestDTO;
-import com.shrodinger.domain.user.dto.UserProfileResponseDTO;
-import com.shrodinger.domain.user.dto.UserResponseDTO;
-import com.shrodinger.domain.user.dto.UserSignUpRequestDto;
+import com.shrodinger.domain.user.dto.*;
 import com.shrodinger.domain.user.entity.Authority;
 import com.shrodinger.domain.user.entity.Member;
 import com.shrodinger.domain.user.repository.MemberRepository;
@@ -24,6 +21,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.geolatte.geom.M;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -52,7 +50,7 @@ public class UserService {
                 ,signUp.getGu(), signUp.getDong())){
             throw new NeighborhoodHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST);
         }
-        Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong());
+        Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(signUp.getCity(), signUp.getGu(), signUp.getDong()).orElseThrow(()-> new UserHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST));
         if (signUp.getFiles() == null){
             Member user = Member.builder()
                     .email(signUp.getEmail())
@@ -105,6 +103,13 @@ public class UserService {
         }
     }
 
+    public UpdateLocationResponseDTO updateLocation(UpdateLocationRequestDTO updateLocationRequestDTO) {
+        Neighborhood neighborhood = neighborhoodRepository.findByCityAndGuAndDong(updateLocationRequestDTO.getCity(), updateLocationRequestDTO.getGu(), updateLocationRequestDTO.getDong()).orElseThrow(() -> new UserHandler(ErrorStatus.NEIGHBORHOOD_NOT_EXIST));
+        Member member = getMemberFromToken();
+        member.updateNeighborhood(neighborhood);
+        return UpdateLocationResponseDTO.from(neighborhood);
+    }
+
     /*
     public ResponseEntity<?> reissue(UserRequestDto.Reissue reissue) {
         // 1. Refresh Token 검증
@@ -154,6 +159,7 @@ public class UserService {
         Member member = getMemberFromToken();
         return UserProfileResponseDTO.from(member);
     }
+
 
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();

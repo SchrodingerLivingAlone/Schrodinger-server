@@ -100,5 +100,9 @@ public class Member implements UserDetails {
         this.password = passwordEncoder.encode(this.password);
     }
 
+    public void updateNeighborhood(Neighborhood neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
 
 }
