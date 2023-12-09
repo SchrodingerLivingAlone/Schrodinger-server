@@ -63,16 +63,16 @@ public class NeighborhoodPost extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer commentCount;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL ,orphanRemoval = true)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NeighborhoodPostImage> neighborhoodPostImages;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL ,orphanRemoval = true)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NeighborhoodComment> neighborhoodComments;
 
     @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NeighborhoodHeart> neighborhoodHearts;
 
-    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "neighborhoodPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scrap> scraps;
     private String place;   // 사용자 장소 공유시 장소 이름(ex. "00키친")
 
@@ -88,10 +88,7 @@ public class NeighborhoodPost extends BaseTimeEntity {
             neighborhoodPostImages.get(i).setImageUrl(updatedImageUrls.get(i));
         }
         for (int i = neighborhoodPostImages.size(); i < updatedImageUrls.size(); i++) {
-            neighborhoodPostImages.add(NeighborhoodPostImage.builder()
-                    .neighborhoodPost(this)
-                    .imageUrl(updatedImageUrls.get(i))
-                    .build());
+            neighborhoodPostImages.add(NeighborhoodPostImage.builder().neighborhoodPost(this).imageUrl(updatedImageUrls.get(i)).build());
         }
 
     }
@@ -104,13 +101,15 @@ public class NeighborhoodPost extends BaseTimeEntity {
         this.commentCount += 1;
     }
 
+    public void deleteCommentCount() {
+        this.commentCount -= 1;
+    }
+
     public void updateImages(List<NeighborhoodPostImage> neighborhoodPostImages) {
         this.neighborhoodPostImages = neighborhoodPostImages;
     }
 
     public List<String> fromImages() {
-        return neighborhoodPostImages.stream()
-                .map(NeighborhoodPostImage::getImageUrl)
-                .collect(Collectors.toList());
+        return neighborhoodPostImages.stream().map(NeighborhoodPostImage::getImageUrl).collect(Collectors.toList());
     }
 }

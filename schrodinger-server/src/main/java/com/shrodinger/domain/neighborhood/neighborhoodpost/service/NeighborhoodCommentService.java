@@ -74,6 +74,7 @@ public class NeighborhoodCommentService {
 
     public String deleteComment(Long commentId){
         NeighborhoodComment neighborhoodComment =neighborhoodCommentRepository.findById(commentId).orElseThrow(() -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_COMMENT_NOT_EXIST));
+        neighborhoodComment.getNeighborhoodPost().deleteCommentCount();
         neighborhoodCommentRepository.delete(neighborhoodComment);
         return "댓글 삭제 성공";
     }
