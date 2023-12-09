@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -42,6 +44,7 @@ public class NeighborhoodPostService {
     public UserNeighborhoodResponseDTO getUserLocation() {
         return UserNeighborhoodResponseDTO.builder().town(getMemberFromToken().getNeighborhood().getDong()).build();
     }
+
     @Transactional
     public CreateNeighborhoodPostResponseDTO createNeighborhoodPost(CreateNeighborhoodPostRequestDTO createNeighborhoodPostRequestDTO) {
         Member member = getMemberFromToken();
@@ -69,21 +72,22 @@ public class NeighborhoodPostService {
     public List<NeighborhoodPostResponseDTO> getAllPosts(int sort, NeighborhoodPostCategory category) {
         Member member = getMemberFromToken();
         if (sort == 0) {
-             return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(member.getNeighborhood(),category).stream()
-                     .map(NeighborhoodPostResponseDTO::from)
-                     .collect(Collectors.toList());
-        } else if (sort == 1){
-            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescView(member.getNeighborhood(),category).stream()
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDesc(member.getNeighborhood(), category).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
-        }
-        else if(sort ==2){
-            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescLikeCount(member.getNeighborhood(),category).stream()
+        } else if (sort == 2) {
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByViewDescCreatedAtDesc(member.getNeighborhood(), category).stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
-        }
-        else {
-            return neighborhoodPostRepository.findAllByNeighborhoodOrderByCreatedAtDescView(member.getNeighborhood()).stream()
+        } else if (sort == 1) {
+            return neighborhoodPostRepository.findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByLikeCountDescCreatedAtDesc(member.getNeighborhood(), category).stream()
+                    .map(NeighborhoodPostResponseDTO::from)
+                    .collect(Collectors.toList());
+        } else {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime startOfDay = LocalDateTime.of(now.toLocalDate(), LocalTime.MIN);
+            return neighborhoodPostRepository.findAllByNeighborhoodAndCreatedAtAfterOrderByViewDescCreatedAtDesc(member.getNeighborhood(), startOfDay)
+                    .stream()
                     .map(NeighborhoodPostResponseDTO::from)
                     .collect(Collectors.toList());
         }
@@ -91,7 +95,7 @@ public class NeighborhoodPostService {
 
     public NeighborhoodPostResponseDTO updatePost(long post_id, UpdateNeighborhoodPostRequestDTO updateNeighborhoodPostRequestDTO) {
         Member member = getMemberFromToken();
-        validateMember(member,post_id);
+        validateMember(member, post_id);
         NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
         post.updateBoard(updateNeighborhoodPostRequestDTO);
@@ -101,24 +105,25 @@ public class NeighborhoodPostService {
 
     public void deletePost(long post_id) {
         Member member = getMemberFromToken();
-        validateMember(member,post_id);
+        validateMember(member, post_id);
         NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
         neighborhoodPostRepository.delete(post);
     }
-    public NeighborhoodPostDetailResponseDTO getPost(long post_id){
+
+    public NeighborhoodPostDetailResponseDTO getPost(long post_id) {
         NeighborhoodPost post = neighborhoodPostRepository.findById(post_id).orElseThrow(
                 () -> new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_NOT_EXIST));
         post.updateView();
         Member member = getMemberFromToken();
         neighborhoodPostRepository.save(post);
-        NeighborhoodPostDetailResponseDTO neighborhoodPostDetailResponseDTO = NeighborhoodPostDetailResponseDTO.from(post,member);
-        neighborhoodPostDetailResponseDTO.setLiked(neighborhoodHeartRepository.existsByMemberAndNeighborhoodPost(member,post));
-        neighborhoodPostDetailResponseDTO.setScrapped(scrapRepository.existsByMemberAndNeighborhoodPost(member,post));
+        NeighborhoodPostDetailResponseDTO neighborhoodPostDetailResponseDTO = NeighborhoodPostDetailResponseDTO.from(post, member);
+        neighborhoodPostDetailResponseDTO.setLiked(neighborhoodHeartRepository.existsByMemberAndNeighborhoodPost(member, post));
+        neighborhoodPostDetailResponseDTO.setScrapped(scrapRepository.existsByMemberAndNeighborhoodPost(member, post));
         return neighborhoodPostDetailResponseDTO;
     }
 
-    public List<NeighborhoodPostResponseDTO> getPostsByKeyword (String keyword){
+    public List<NeighborhoodPostResponseDTO> getPostsByKeyword(String keyword) {
         List<NeighborhoodPostResponseDTO> postsByTitleKeyword = neighborhoodPostRepository.findAllByTitleContaining(keyword)
                 .stream()
                 .map(NeighborhoodPostResponseDTO::from)
@@ -135,7 +140,7 @@ public class NeighborhoodPostService {
         return combinedList;
     }
 
-    public List<NeighborhoodPostResponseDTO> getWrittenPosts(){
+    public List<NeighborhoodPostResponseDTO> getWrittenPosts() {
         Member member = getMemberFromToken();
         List<NeighborhoodPost> neighborhoodPosts = neighborhoodPostRepository.findAllByMember(member);
         return neighborhoodPosts.stream()
@@ -144,14 +149,14 @@ public class NeighborhoodPostService {
     }
 
 
-
     private Member getMemberFromToken() {
         String userEmail = SecurityUtil.getCurrentUserEmail();
         Member member = memberRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserHandler(ErrorStatus._UNAUTHORIZED));
         return member;
     }
-    public List<NeighborhoodPostImage> convertToNeighborhoodPostImageList(List<String> images , NeighborhoodPost neighborhoodPost) {
+
+    public List<NeighborhoodPostImage> convertToNeighborhoodPostImageList(List<String> images, NeighborhoodPost neighborhoodPost) {
         List<NeighborhoodPostImage> neighborhoodPostImages = new ArrayList<>();
         for (String imageUrl : images) {
             // NeighborhoodPostImage 객체 생성
@@ -164,7 +169,7 @@ public class NeighborhoodPostService {
         return neighborhoodPostImages;
     }
 
-    public void validateMember(Member member, Long post_id){
+    public void validateMember(Member member, Long post_id) {
         if (!neighborhoodPostRepository.existsByMemberAndId(member, post_id)) {
             throw new NeighborhoodPostHandler(ErrorStatus.NEIGHBORHOOD_POST_OWNER_ERROR);
         }

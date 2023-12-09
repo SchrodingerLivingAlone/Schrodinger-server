@@ -9,17 +9,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface NeighborhoodPostRepository extends JpaRepository<NeighborhoodPost, Long> {
-    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAt(Neighborhood neighborhood, NeighborhoodPostCategory category);
-    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescView(Neighborhood neighborhood, NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDesc(Neighborhood neighborhood, NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByViewDescCreatedAtDesc(Neighborhood neighborhood, NeighborhoodPostCategory category);
 
-    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByCreatedAtDescLikeCount(Neighborhood neighborhood, NeighborhoodPostCategory category);
+    List<NeighborhoodPost> findAllByNeighborhoodAndNeighborhoodPostCategoryOrderByLikeCountDescCreatedAtDesc(Neighborhood neighborhood, NeighborhoodPostCategory category);
 
-    List<NeighborhoodPost> findAllByNeighborhoodOrderByCreatedAtDescView(Neighborhood neighborhood);
+    List<NeighborhoodPost> findAllByNeighborhoodAndCreatedAtAfterOrderByViewDescCreatedAtDesc(Neighborhood neighborhood, LocalDateTime localDateTime);
     Optional<NeighborhoodPost> findById(Long id);
     List<NeighborhoodPost> findAllByTitleContaining(String keyword);
 
