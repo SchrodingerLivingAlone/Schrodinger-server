@@ -85,7 +85,7 @@ public class NeighborhoodPostService {
                     .collect(Collectors.toList());
         } else {
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime startOfDay = LocalDateTime.of(now.toLocalDate(), LocalTime.MIN);
+            LocalDateTime startOfDay = now.minusDays(5).with(LocalTime.MIN);
             return neighborhoodPostRepository.findAllByNeighborhoodAndCreatedAtAfterOrderByViewDescCreatedAtDesc(member.getNeighborhood(), startOfDay)
                     .stream()
                     .map(NeighborhoodPostResponseDTO::from)
