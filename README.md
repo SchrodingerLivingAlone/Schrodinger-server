@@ -1,17 +1,17 @@
 # Schrodinger-server
 ## **[슈뢰딩거의 자취]** 앱 소개
 
-![KakaoTalk_20231007_165138244.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/39dda95e-0b49-4043-8c2c-63fc0b9a5ab4/KakaoTalk_20231007_165138244.png)
+![KakaoTalk_20231007_165138244.png]([https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/39dda95e-0b49-4043-8c2c-63fc0b9a5ab4/KakaoTalk_20231007_165138244.png](https://file.notion.so/f/f/48a064bb-2ff7-432d-b503-96c61407987b/39dda95e-0b49-4043-8c2c-63fc0b9a5ab4/KakaoTalk_20231007_165138244.png?id=3ab7d009-b901-4d3d-a2c3-be480714f659&table=block&spaceId=48a064bb-2ff7-432d-b503-96c61407987b&expirationTimestamp=1703318400000&signature=ZIzkaoSOg3c3ThGrlMI4l-5AMBP3DyrMsmbvbCBywhw&downloadName=KakaoTalk_20231007_165138244.png))
 
 "슈뢰딩거의 자취"는 완벽하게 1인 가구에 맞춘 커뮤니티와 동네 정보를 제공하며, 효율적인 생활비 관리 및 자취에 관련된 유용한 도움을 제공하는 앱입니다.
 
 ## 앱 개발 배경
 
-![그림 1](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/7f79147e-29d7-4e79-8b99-9c8b3d2ea536/Untitled.png)
+![그림 1](https://file.notion.so/f/f/48a064bb-2ff7-432d-b503-96c61407987b/7f79147e-29d7-4e79-8b99-9c8b3d2ea536/Untitled.png?id=04b8fc99-869b-4a3d-8aec-7861afeb7079&table=block&spaceId=48a064bb-2ff7-432d-b503-96c61407987b&expirationTimestamp=1703318400000&signature=tXOtwVivrYRKdC3BVIlk1MMc1wTDswiXeaBh3tqjfJ0&downloadName=Untitled.png)
 
 그림 1
 
-![그림 2](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/8d941cd7-43b7-4b72-aad1-598fcd85ede7/Untitled.png)
+![그림 2](https://file.notion.so/f/f/48a064bb-2ff7-432d-b503-96c61407987b/8d941cd7-43b7-4b72-aad1-598fcd85ede7/Untitled.png?id=58a1fe2b-b07b-4b7c-8805-e070e91831c8&table=block&spaceId=48a064bb-2ff7-432d-b503-96c61407987b&expirationTimestamp=1703318400000&signature=a-EBGtDnY32actGGEV5JascBLMQIaGVOEw_H9PJL210&downloadName=Untitled.png)
 
 그림 2
 
@@ -42,28 +42,7 @@
     - 지출을 기록하고 예산을 설정하여 자취 생활의 경제성을 향상시킬 수 있게 돕는다.
     - 또한 지출 내역과 가계부를 공유하고 참고하며 경제성을 높일 수 있게 돕는다.
 
-## 주요기능
+## API 
+https://realisshomyang.notion.site/API-29aa5e677a8e4e5fb3e811feda04721a?pvs=4
 
-### 로그인 및 홈 화면
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/a62af8f3-0939-439a-b8cf-b7af7e3b51cb/Untitled.png)
-
-### 가계부 # 1 나의 가계부
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/3156d272-46c6-4641-8927-5fb023df392a/Untitled.png)
-
-### 가계부 # 2 가계부 공유
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/40148746-bec6-46a3-b0ab-7d498012abb8/Untitled.png)
-
-### 동네 정보 공유
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/44788a96-bf5d-40c3-8ad9-bcb8e32b10e4/Untitled.png)
-
-### 마이페이지
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/945d3791-63c8-416f-b326-0d6ab7c72c0a/Untitled.png)
-
-## 플로우차트
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/48a064bb-2ff7-432d-b503-96c61407987b/eed72d69-32cc-4ff1-813d-a50a403e8185/Untitled.png)
+api 명세입니다.
